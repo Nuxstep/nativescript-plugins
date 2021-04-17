@@ -63,6 +63,13 @@ module.exports = {
 		// packages
 		// build output is always in dist/packages
 		'@nuxstep': {
+			// @nuxstep/nativescript-spotify
+			'nativescript-spotify': {
+				build: {
+					script: 'nx run nativescript-spotify:build.all',
+					description: '@nuxstep/nativescript-spotify: Build',
+				},
+			},
 			'build-all': {
 				script: 'nx run all:build',
 				description: 'Build all packages',
@@ -73,6 +80,10 @@ module.exports = {
 			description: '_____________  Focus (VS Code supported)  _____________',
 		},
 		focus: {
+			'nativescript-spotify': {
+				script: 'nx run nativescript-spotify:focus',
+				description: 'Focus on @nuxstep/nativescript-spotify',
+			},
 			reset: {
 				script: 'nx run all:focus',
 				description: 'Reset Focus',

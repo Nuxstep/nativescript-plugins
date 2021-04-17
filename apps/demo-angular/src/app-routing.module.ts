@@ -5,8 +5,9 @@ import { NativeScriptRouterModule } from '@nativescript/angular';
 import { HomeComponent } from './home.component';
 
 const routes: Routes = [
-   { path: '', redirectTo: '/home', pathMatch: 'full' },
-   { path: 'home', component: HomeComponent }
+	{ path: '', redirectTo: '/home', pathMatch: 'full' },
+	{ path: 'home', component: HomeComponent },
+	{ path: 'nativescript-spotify', loadChildren: () => import('./plugin-demos/nativescript-spotify.module').then((m) => m.NativescriptSpotifyModule) },
 ];
 
 @NgModule({

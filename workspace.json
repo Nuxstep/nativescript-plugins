@@ -86,6 +86,47 @@
 					}
 				}
 			}
+		},
+		"nativescript-spotify": {
+			"projectType": "library",
+			"schematics": {},
+			"root": "packages/nativescript-spotify",
+			"sourceRoot": "packages/nativescript-spotify",
+			"architect": {
+				"build": {
+					"builder": "@nrwl/node:package",
+					"options": {
+						"outputPath": "dist/packages/nativescript-spotify",
+						"tsConfig": "packages/nativescript-spotify/tsconfig.json",
+						"packageJson": "packages/nativescript-spotify/package.json",
+						"main": "packages/nativescript-spotify/index.ts",
+						"assets": [
+							"packages/nativescript-spotify/*.md",
+							"packages/nativescript-spotify/index.d.ts",
+							"LICENSE",
+							{
+								"glob": "**/*",
+								"input": "packages/nativescript-spotify/platforms/",
+								"output": "./platforms/"
+							}
+						]
+					}
+				},
+				"build.all": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx run nativescript-spotify:build", "node tools/scripts/build-finish.ts nativescript-spotify"],
+						"parallel": false
+					}
+				},
+				"focus": {
+					"builder": "@nrwl/workspace:run-commands",
+					"options": {
+						"commands": ["nx g @nativescript/plugin-tools:focus-packages nativescript-spotify"],
+						"parallel": false
+					}
+				}
+			}
 		}
 	},
 	"cli": {
