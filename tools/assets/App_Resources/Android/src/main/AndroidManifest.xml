@@ -23,11 +23,13 @@
 		android:label="@string/app_name"
 		android:theme="@style/AppTheme">
 
+		<!-- NativeScript Activity -->
 		<activity
 			android:name="com.tns.NativeScriptActivity"
 			android:label="@string/title_activity_kimera"
 			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|locale|uiMode"
-			android:theme="@style/LaunchScreenTheme">
+			android:theme="@style/LaunchScreenTheme"
+			android:launchMode="singleTask">
 
 			<meta-data android:name="SET_THEME_ON_LAUNCH" android:resource="@style/AppTheme" />
 
@@ -35,7 +37,25 @@
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+
+			<!-- Custom URI schemes -->
+			<intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+					android:scheme="plugindemo"
+					android:host="spotify" />
+    	</intent-filter>
 		</activity>
-		<activity android:name="com.tns.ErrorReportActivity"/>
+
+		<!-- Error Report Activity -->
+		<activity android:name="com.tns.ErrorReportActivity" />
+
+		<!-- Spotify Activity -->
+		<activity 
+			android:name="com.spotify.sdk.android.authentication.LoginActivity" 
+			android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 	</application>
 </manifest>

@@ -6,8 +6,7 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-            <Button text="Test nativescript-spotify" tap="{{ testIt }}" class="btn btn-primary"/>
-
+            <Button text="Request Authorization" tap="{{ requestAuthorization }}" class="btn btn-primary"/>
           </StackLayout>
         </ScrollView>
     </StackLayout>
