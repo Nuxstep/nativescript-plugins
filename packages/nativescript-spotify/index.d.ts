@@ -1,6 +1,6 @@
-import { NativescriptSpotifyCommon } from './common';
+import { SpotifyCommon } from './common';
 
-export declare class NativescriptSpotify extends NativescriptSpotifyCommon {
+export declare class SpotifyAppRemote extends SpotifyCommon {
 	constructor(clientId: string, redirectUri: string);
 	public async requestAuthorization();
 }

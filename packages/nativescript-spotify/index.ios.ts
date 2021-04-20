@@ -1,3 +1,3 @@
-import { NativescriptSpotifyCommon } from './common';
+import { SpotifyCommon } from './common';
 
-export class NativescriptSpotify extends NativescriptSpotifyCommon {}
+export class NativescriptSpotify extends SpotifyCommon {}
