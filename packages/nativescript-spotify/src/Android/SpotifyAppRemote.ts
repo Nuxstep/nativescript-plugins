@@ -11,11 +11,11 @@ export class SpotifyAppRemote extends SpotifyCommon {
 		this.redirectUri = redirectUri;
 	}
 
-	private createConnectionParams() {
+	private createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
 		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
 	}
 
-	public requestAuthorization() {
+	public requestAuthorization(): Promise<boolean> {
 		return new Promise((resolve, reject) => {
 			com.spotify.android.appremote.api.SpotifyAppRemote.connect(
 				application.android.context,
