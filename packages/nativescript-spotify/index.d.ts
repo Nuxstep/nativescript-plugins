@@ -1,6 +1,6 @@
-import { SpotifyCommon } from './common';
+import { SpotifyCommon } from '../common';
 
 export declare class SpotifyAppRemote extends SpotifyCommon {
 	constructor(clientId: string, redirectUri: string);
-	public async requestAuthorization();
+	public async requestAuthorization(): Promise;
 }
