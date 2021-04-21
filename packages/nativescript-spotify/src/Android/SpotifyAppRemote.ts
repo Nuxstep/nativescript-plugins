@@ -1,10 +1,6 @@
 import * as application from '@nativescript/core/application';
 import { SpotifyCommon } from '../../common';
 
-const _connectionParams = com.spotify.android.appremote.api.ConnectionParams;
-const _connector = com.spotify.android.appremote.api.Connector;
-const _spotifyAppRemote = com.spotify.android.appremote.api.SpotifyAppRemote;
-
 export class SpotifyAppRemote extends SpotifyCommon {
 	private clientId: string;
 	private redirectUri: string;
@@ -16,17 +12,18 @@ export class SpotifyAppRemote extends SpotifyCommon {
 	}
 
 	private createConnectionParams() {
-		return new _connectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
+		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
 	}
 
 	public requestAuthorization() {
 		return new Promise((resolve, reject) => {
-			_spotifyAppRemote.connect(
+			com.spotify.android.appremote.api.SpotifyAppRemote.connect(
 				application.android.context,
 				this.createConnectionParams(),
-				new _connector.ConnectionListener({
-					onConnected(spotifyAppRemote: typeof _spotifyAppRemote) {
-						resolve(spotifyAppRemote);
+				new com.spotify.android.appremote.api.Connector.ConnectionListener({
+					onConnected(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote) {
+						this.spotifyAppRemoteInstance = spotifyAppRemote;
+						resolve(true);
 					},
 
 					onFailure(ex) {
