@@ -4,6 +4,7 @@ import { SpotifyCommon } from '../../common';
 export class SpotifyAppRemote extends SpotifyCommon {
 	private clientId: string;
 	private redirectUri: string;
+	private spotifyAppRemoteInstance: com.spotify.android.appremote.api.SpotifyAppRemote;
 
 	constructor(clientId: string, redirectUri: string) {
 		super();
