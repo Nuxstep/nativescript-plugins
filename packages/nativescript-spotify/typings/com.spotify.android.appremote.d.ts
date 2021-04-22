@@ -33,6 +33,7 @@ declare module com {
 						public play(uri: string): void;
 						public resume(): void;
 						public skipNext(): void;
+						public skipPrevious(): void;
 					}
 
 					// com.spotify.android.appremote.api.SpotifyAppRemote

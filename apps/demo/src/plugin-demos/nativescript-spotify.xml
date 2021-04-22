@@ -11,6 +11,7 @@
             <Button text="Pause" isEnabled="{{ connected && !loading }}" tap="{{ pause }}" class="btn btn-primary"/>
             <Button text="Resume" isEnabled="{{ connected && !loading }}" tap="{{ resume }}" class="btn btn-primary"/>
             <Button text="Skip Next" isEnabled="{{ connected && !loading }}" tap="{{ skipNext }}" class="btn btn-primary"/>
+            <Button text="Skip Previous" isEnabled="{{ connected && !loading }}" tap="{{ skipPrevious }}" class="btn btn-primary"/>
           </StackLayout>
         </ScrollView>
     </StackLayout>

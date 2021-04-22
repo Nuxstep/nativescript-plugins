@@ -88,4 +88,18 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 			console.log(`Error: ${ex}`);
 		}
 	}
+
+	public async skipPrevious() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.skipPrevious();
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
 }
