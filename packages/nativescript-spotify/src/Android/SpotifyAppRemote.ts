@@ -47,6 +47,11 @@ export class SpotifyAppRemote extends SpotifyCommon {
 		return this.spotifyAppRemoteInstance.isConnected();
 	}
 
+	public async pause(): Promise<boolean> {
+		await this.spotifyAppRemoteInstance.getPlayerApi().pause();
+		return true;
+	}
+
 	public async play(uri: string): Promise<boolean> {
 		await this.spotifyAppRemoteInstance.getPlayerApi().play(uri);
 		return true;

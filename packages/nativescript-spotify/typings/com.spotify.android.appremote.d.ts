@@ -29,6 +29,7 @@ declare module com {
 
 					// com.spotify.android.appremote.api.PlayerApi
 					export interface PlayerApi {
+						public pause(): void;
 						public play(uri: string): void;
 					}
 

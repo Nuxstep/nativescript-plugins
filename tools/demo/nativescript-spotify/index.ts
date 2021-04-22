@@ -25,13 +25,31 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 		}
 	}
 
+	public checkConnected() {
+		if (!this.spotify.isConnected()) {
+			console.log('Spotify is not connected');
+			this.set('connected', false);
+			return;
+		}
+	}
+
+	public async pause() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.pause();
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
 	public async play() {
 		try {
-			if (!this.spotify.isConnected()) {
-				console.log('Spotify is not connected');
-				this.set('connected', false);
-				return;
-			}
+			this.checkConnected();
 
 			this.set('loading', true);
 
