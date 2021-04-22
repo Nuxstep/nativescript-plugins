@@ -7,4 +7,5 @@ export declare class SpotifyAppRemote extends SpotifyCommon {
 	public async pause(): Promise<boolean>;
 	public async play(uri: string): Promise<boolean>;
 	public async resume(): Promise<boolean>;
+	public async skipNext(): Promie<boolean>;
 }

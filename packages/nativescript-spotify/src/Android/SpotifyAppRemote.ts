@@ -61,4 +61,9 @@ export class SpotifyAppRemote extends SpotifyCommon {
 		await this.spotifyAppRemoteInstance.getPlayerApi().resume();
 		return true;
 	}
+
+	public async skipNext(): Promise<boolean> {
+		await this.spotifyAppRemoteInstance.getPlayerApi().skipNext();
+		return true;
+	}
 }
