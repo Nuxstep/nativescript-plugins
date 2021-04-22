@@ -6,7 +6,8 @@
     <StackLayout class="p-20">
         <ScrollView class="h-full">
           <StackLayout>
-            <Button text="Request Authorization" tap="{{ requestAuthorization }}" class="btn btn-primary"/>
+            <Button text="Connect" tap="{{ connect }}" isEnabled="{{ !loading }}" class="btn btn-primary"/>
+            <Button text="Play" isEnabled="{{ authorized && !loading }}" tap="{{ play }}" class="btn btn-primary"/>
           </StackLayout>
         </ScrollView>
     </StackLayout>

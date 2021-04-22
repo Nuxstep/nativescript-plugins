@@ -12,19 +12,22 @@ export class SpotifyAppRemote extends SpotifyCommon {
 		this.redirectUri = redirectUri;
 	}
 
+	private setSpotifyAppRemoteInstance(spotifyAppRemoteInstance: com.spotify.android.appremote.api.SpotifyAppRemote) {
+		this.spotifyAppRemoteInstance = spotifyAppRemoteInstance;
+	}
+
 	private createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
 		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
 	}
 
-	public requestAuthorization(): Promise<boolean> {
+	private requestAuthorization(): Promise<com.spotify.android.appremote.api.SpotifyAppRemote> {
 		return new Promise((resolve, reject) => {
 			com.spotify.android.appremote.api.SpotifyAppRemote.connect(
 				application.android.context,
 				this.createConnectionParams(),
 				new com.spotify.android.appremote.api.Connector.ConnectionListener({
 					onConnected(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote) {
-						this.spotifyAppRemoteInstance = spotifyAppRemote;
-						resolve(true);
+						resolve(spotifyAppRemote);
 					},
 
 					onFailure(ex) {
@@ -33,5 +36,15 @@ export class SpotifyAppRemote extends SpotifyCommon {
 				})
 			);
 		});
+	}
+
+	public async connect(): Promise<boolean> {
+		this.spotifyAppRemoteInstance = await this.requestAuthorization();
+		return true;
+	}
+
+	public async play(uri: string): Promise<boolean> {
+		await this.spotifyAppRemoteInstance.getPlayerApi().play(uri);
+		return true;
 	}
 }

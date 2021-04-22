@@ -27,10 +27,17 @@ declare module com {
 						}
 					}
 
+					// com.spotify.android.appremote.api.PlayerApi
+					export interface PlayerApi {
+						public play(uri: string): void;
+					}
+
 					// com.spotify.android.appremote.api.SpotifyAppRemote
 					export class SpotifyAppRemote {
 						public static connect(context: android.content.Context, params: com.spotify.android.appremote.api.ConnectionParams, connectionListener: com.spotify.android.appremote.api.Connector.ConnectionListener): void;
 						public static disconnect(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote): void;
+						public getPlayerApi(): com.spotify.android.appremote.api.PlayerApi;
+						public isConnected(): boolean;
 					}
 				}
 			}
