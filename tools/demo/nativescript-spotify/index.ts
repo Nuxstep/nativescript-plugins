@@ -33,6 +33,21 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 		}
 	}
 
+	public disconnect() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			this.spotify.disconnect(true);
+
+			this.set('loading', false);
+			this.set('connected', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
 	public async pause() {
 		try {
 			this.checkConnected();

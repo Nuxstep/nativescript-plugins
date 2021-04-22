@@ -3,6 +3,7 @@ import { SpotifyCommon } from '../common';
 export declare class SpotifyAppRemote extends SpotifyCommon {
 	constructor(clientId: string, redirectUri: string);
 	public async connect(): Promise<boolean>;
+	public async disconnect(pauseBeforeDisconnect: boolean): Promise<boolean>;
 	public isConnected(): boolean;
 	public async pause(): Promise<boolean>;
 	public async play(uri: string): Promise<boolean>;
