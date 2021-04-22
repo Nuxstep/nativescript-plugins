@@ -9,6 +9,7 @@
             <Button text="Connect" tap="{{ connect }}" isEnabled="{{ !connected && !loading }}" class="btn btn-primary"/>
             <Button text="Play" isEnabled="{{ connected && !loading }}" tap="{{ play }}" class="btn btn-primary"/>
             <Button text="Pause" isEnabled="{{ connected && !loading }}" tap="{{ pause }}" class="btn btn-primary"/>
+            <Button text="Resume" isEnabled="{{ connected && !loading }}" tap="{{ resume }}" class="btn btn-primary"/>
           </StackLayout>
         </ScrollView>
     </StackLayout>

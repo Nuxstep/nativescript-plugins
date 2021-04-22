@@ -60,4 +60,18 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 			console.log(`Error: ${ex}`);
 		}
 	}
+
+	public async resume() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.resume();
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
 }
