@@ -12,10 +12,6 @@ export class SpotifyAppRemote extends SpotifyCommon {
 		this.redirectUri = redirectUri;
 	}
 
-	private setSpotifyAppRemoteInstance(spotifyAppRemoteInstance: com.spotify.android.appremote.api.SpotifyAppRemote) {
-		this.spotifyAppRemoteInstance = spotifyAppRemoteInstance;
-	}
-
 	private createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
 		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
 	}
