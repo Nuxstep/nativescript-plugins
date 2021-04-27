@@ -82,6 +82,28 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	public async resume(): Promise<void>;
 
 	/**
+	 * Set repeat mode to repeatMode
+	 *
+	 * @async
+	 * @param {RepeatMode} repeatMode Must be one of OFF, ALL, or ONE
+	 * @return {Promise<void>} Resolves when action is executed
+	 * @memberof SpotifyAppRemote
+	 * @see RepeatMode
+	 */
+	public async setRepeat(repeatMode: RepeatMode): Promise<void>;
+
+	/**
+	 * Set the shuffle state
+	 *
+	 * @async
+	 * @param {boolean} enabled True enables shuffling, false turns it off
+	 * @return {Promise<void>} Resolves when action is executed
+	 * @memberof SpotifyAppRemote
+	 * @see RepeatMode
+	 */
+	public async setShuffle(enabled: boolean): Promise<void>;
+
+	/**
 	 * Skip to the next track in the currently playing context if there is one
 	 *
 	 * @async
@@ -99,17 +121,6 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * @memberof SpotifyAppRemote
 	 */
 	public async skipPrevious(): Promise<void>;
-
-	/**
-	 * Set repeat mode to repeatMode
-	 *
-	 * @async
-	 * @param {RepeatMode} repeatMode Must be one of OFF, ALL, or ONE
-	 * @return {Promise<void>} Resolves when action is executed
-	 * @memberof SpotifyAppRemote
-	 * @see RepeatMode
-	 */
-	public async setRepeat(repeatMode: RepeatMode): Promise<void>;
 }
 
 /**

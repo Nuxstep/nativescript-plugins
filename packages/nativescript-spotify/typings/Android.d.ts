@@ -33,9 +33,10 @@ declare module com {
 						public pause(): com.spotify.protocol.client.CallResult;
 						public play(uri: string): com.spotify.protocol.client.CallResult;
 						public resume(): com.spotify.protocol.client.CallResult;
+						public setRepeat(repeatMode: int): com.spotify.protocol.client.CallResult;
+						public setShuffle(enabled: boolean): com.spotify.protocol.client.CallResult;
 						public skipNext(): com.spotify.protocol.client.CallResult;
 						public skipPrevious(): com.spotify.protocol.client.CallResult;
-						public setRepeat(repeatMode: int): com.spotify.protocol.client.CallResult;
 					}
 
 					// com.spotify.android.appremote.api.SpotifyAppRemote

@@ -33,13 +33,13 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 		}
 	}
 
-	public disconnect() {
+	public async disconnect() {
 		try {
 			this.checkConnected();
 
 			this.set('loading', true);
 
-			this.spotify.disconnect(true);
+			await this.spotify.disconnect(true);
 
 			this.set('loading', false);
 			this.set('connected', false);
@@ -105,34 +105,6 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 		}
 	}
 
-	public async skipNext() {
-		try {
-			this.checkConnected();
-
-			this.set('loading', true);
-
-			await this.spotify.skipNext();
-
-			this.set('loading', false);
-		} catch (ex) {
-			console.log(`Error: ${ex}`);
-		}
-	}
-
-	public async skipPrevious() {
-		try {
-			this.checkConnected();
-
-			this.set('loading', true);
-
-			await this.spotify.skipPrevious();
-
-			this.set('loading', false);
-		} catch (ex) {
-			console.log(`Error: ${ex}`);
-		}
-	}
-
 	public async setRepeatModeToOff() {
 		try {
 			this.checkConnected();
@@ -168,6 +140,62 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 			this.set('loading', true);
 
 			await this.spotify.setRepeat(RepeatMode.ONE);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async setShuffleToOn() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.setShuffle(true);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async setShuffleToOff() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.setShuffle(false);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async skipNext() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.skipNext();
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async skipPrevious() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.skipPrevious();
 
 			this.set('loading', false);
 		} catch (ex) {

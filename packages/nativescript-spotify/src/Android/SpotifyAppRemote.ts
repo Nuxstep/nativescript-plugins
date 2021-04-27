@@ -132,6 +132,42 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
+	public async setRepeat(repeatMode: RepeatMode): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().setRepeat(repeatMode);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
+	}
+
+	public async setShuffle(enable: boolean): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().setShuffle(enable);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
+	}
+
 	public async skipNext(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
@@ -154,24 +190,6 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return new Promise((resolve, reject) => {
 			try {
 				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().skipPrevious();
-
-				callResult.setResultCallback(
-					new com.spotify.protocol.client.CallResult.ResultCallback({
-						onResult() {
-							resolve();
-						},
-					})
-				);
-			} catch (exception) {
-				reject(exception);
-			}
-		});
-	}
-
-	public async setRepeat(repeatMode: RepeatMode): Promise<void> {
-		return new Promise((resolve, reject) => {
-			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().setRepeat(repeatMode);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
