@@ -1,5 +1,6 @@
 import { DemoSharedBase } from '../utils';
 import { SpotifyAppRemote } from '@nuxstep/nativescript-spotify';
+import { RepeatMode } from '@nuxstep/nativescript-spotify/common';
 
 export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	// UI
@@ -126,6 +127,48 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 			this.set('loading', true);
 
 			await this.spotify.skipPrevious();
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async setRepeatModeToOff() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.setRepeat(RepeatMode.OFF);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async setRepeatModeToAll() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.setRepeat(RepeatMode.ALL);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async setRepeatModeToOne() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			await this.spotify.setRepeat(RepeatMode.ONE);
 
 			this.set('loading', false);
 		} catch (ex) {

@@ -1,5 +1,6 @@
 import * as application from '@nativescript/core/application';
 import { SpotifyAppRemoteCommon, PlayerState } from '../../common';
+import { RepeatMode } from '../common/RepeatMode';
 
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	private clientId: string;
@@ -98,6 +99,11 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public async skipPrevious(): Promise<boolean> {
 		await this.spotifyAppRemoteInstance.getPlayerApi().skipPrevious();
+		return true;
+	}
+
+	public async setRepeat(repeatMode: RepeatMode): Promise<boolean> {
+		await this.spotifyAppRemoteInstance.getPlayerApi().setRepeat(repeatMode);
 		return true;
 	}
 }

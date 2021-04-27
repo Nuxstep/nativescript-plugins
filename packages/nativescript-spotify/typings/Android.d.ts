@@ -35,6 +35,7 @@ declare module com {
 						public resume(): void;
 						public skipNext(): void;
 						public skipPrevious(): void;
+						public setRepeat(repeatMode: int): void;
 					}
 
 					// com.spotify.android.appremote.api.SpotifyAppRemote

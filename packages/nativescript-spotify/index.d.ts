@@ -1,4 +1,5 @@
 import { SpotifyAppRemoteCommon, PlayerState } from './common';
+import { RepeatMode } from './src/common/RepeatMode';
 
 /**
  * App remote allows you to control playback in the Spotify app
@@ -99,4 +100,15 @@ export declare class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * @memberof SpotifyAppRemote
 	 */
 	public async skipPrevious(): Promise<boolean>;
+
+	/**
+	 * Set repeat mode to repeatMode
+	 *
+	 * @async
+	 * @param {RepeatMode} repeatMode Must be one of OFF, ALL, or ONE
+	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @memberof SpotifyAppRemote
+	 * @see RepeatMode
+	 */
+	public async setRepeat(repeatMode: RepeatMode): Promise<boolean>;
 }
