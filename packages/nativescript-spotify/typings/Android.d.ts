@@ -30,12 +30,12 @@ declare module com {
 					// com.spotify.android.appremote.api.PlayerApi
 					export interface PlayerApi {
 						public getPlayerState(): com.spotify.protocol.client.CallResult;
-						public pause(): void;
-						public play(uri: string): void;
-						public resume(): void;
-						public skipNext(): void;
-						public skipPrevious(): void;
-						public setRepeat(repeatMode: int): void;
+						public pause(): com.spotify.protocol.client.CallResult;
+						public play(uri: string): com.spotify.protocol.client.CallResult;
+						public resume(): com.spotify.protocol.client.CallResult;
+						public skipNext(): com.spotify.protocol.client.CallResult;
+						public skipPrevious(): com.spotify.protocol.client.CallResult;
+						public setRepeat(repeatMode: int): com.spotify.protocol.client.CallResult;
 					}
 
 					// com.spotify.android.appremote.api.SpotifyAppRemote

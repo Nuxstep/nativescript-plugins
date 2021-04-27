@@ -20,20 +20,20 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * Connect to Spotify App Remote
 	 *
 	 * @async
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async connect(): Promise<boolean>;
+	public async connect(): Promise<void>;
 
 	/**
 	 * Disconnect from Spotify App Remote
 	 *
 	 * @async
 	 * @param {boolean} pauseBeforeDisconnect Whether to pause the playback before disconnecting
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async disconnect(pauseBeforeDisconnect: boolean): Promise<boolean>;
+	public async disconnect(pauseBeforeDisconnect: boolean): Promise<void>;
 
 	/**
 	 * Check if Spotify App Remote is currently connected
@@ -57,59 +57,59 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * Pause playback if it's current playing
 	 *
 	 * @async
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async pause(): Promise<boolean>;
+	public async pause(): Promise<void>;
 
 	/**
 	 * Play the given Spotify uri
 	 *
 	 * @async
 	 * @param {string} uri uri to play
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async play(uri: string): Promise<boolean>;
+	public async play(uri: string): Promise<void>;
 
 	/**
 	 * Resume playback if it's currently paused
 	 *
 	 * @async
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async resume(): Promise<boolean>;
+	public async resume(): Promise<void>;
 
 	/**
 	 * Skip to the next track in the currently playing context if there is one
 	 *
 	 * @async
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async skipNext(): Promise<boolean>;
+	public async skipNext(): Promise<void>;
 
 	/**
 	 * Restart the current track or, if current track has played for less than
 	 * 3 seconds, skip to the previous track in the currently playing context
 	 *
 	 * @async
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async skipPrevious(): Promise<boolean>;
+	public async skipPrevious(): Promise<void>;
 
 	/**
 	 * Set repeat mode to repeatMode
 	 *
 	 * @async
 	 * @param {RepeatMode} repeatMode Must be one of OFF, ALL, or ONE
-	 * @return {Promise<boolean>} Resolves to true when action is executed
+	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 * @see RepeatMode
 	 */
-	public async setRepeat(repeatMode: RepeatMode): Promise<boolean>;
+	public async setRepeat(repeatMode: RepeatMode): Promise<void>;
 }
 
 /**

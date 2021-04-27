@@ -28,27 +28,27 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 						resolve(spotifyAppRemote);
 					},
 
-					onFailure(ex) {
-						reject(ex);
+					onFailure(exception) {
+						reject(exception);
 					},
 				})
 			);
 		});
 	}
 
-	public async connect(): Promise<boolean> {
+	public async connect(): Promise<void> {
 		this.spotifyAppRemoteInstance = await this.requestAuthorization();
-		return true;
+		return;
 	}
 
-	public async disconnect(pauseBeforeDisconnect: boolean): Promise<boolean> {
+	public async disconnect(pauseBeforeDisconnect: boolean): Promise<void> {
 		if (pauseBeforeDisconnect) {
 			await this.pause();
 		}
 
 		com.spotify.android.appremote.api.SpotifyAppRemote.disconnect(this.spotifyAppRemoteInstance);
 
-		return true;
+		return;
 	}
 
 	public isConnected(): boolean {
@@ -67,8 +67,8 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 						},
 					})
 				);
-			} catch (ex) {
-				reject(ex);
+			} catch (exception) {
+				reject(exception);
 			}
 		});
 	}
@@ -78,33 +78,111 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return this.buildPlayerState(data);
 	}
 
-	public async pause(): Promise<boolean> {
-		await this.spotifyAppRemoteInstance.getPlayerApi().pause();
-		return true;
+	public async pause(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().pause();
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
 	}
 
-	public async play(uri: string): Promise<boolean> {
-		await this.spotifyAppRemoteInstance.getPlayerApi().play(uri);
-		return true;
+	public async play(uri: string): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().play(uri);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
 	}
 
-	public async resume(): Promise<boolean> {
-		await this.spotifyAppRemoteInstance.getPlayerApi().resume();
-		return true;
+	public async resume(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().resume();
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
 	}
 
-	public async skipNext(): Promise<boolean> {
-		await this.spotifyAppRemoteInstance.getPlayerApi().skipNext();
-		return true;
+	public async skipNext(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().skipNext();
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
 	}
 
-	public async skipPrevious(): Promise<boolean> {
-		await this.spotifyAppRemoteInstance.getPlayerApi().skipPrevious();
-		return true;
+	public async skipPrevious(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().skipPrevious();
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
 	}
 
-	public async setRepeat(repeatMode: RepeatMode): Promise<boolean> {
-		await this.spotifyAppRemoteInstance.getPlayerApi().setRepeat(repeatMode);
-		return true;
+	public async setRepeat(repeatMode: RepeatMode): Promise<void> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().setRepeat(repeatMode);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult() {
+							resolve();
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
 	}
 }
