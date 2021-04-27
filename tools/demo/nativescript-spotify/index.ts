@@ -1,6 +1,5 @@
 import { DemoSharedBase } from '../utils';
-import { SpotifyAppRemote } from '@nuxstep/nativescript-spotify';
-import { RepeatMode } from '@nuxstep/nativescript-spotify/common';
+import { SpotifyAppRemote, RepeatMode } from '@nuxstep/nativescript-spotify';
 
 export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	// UI

@@ -1,5 +1,6 @@
 import * as application from '@nativescript/core/application';
-import { SpotifyAppRemoteCommon, PlayerState } from '../../common';
+import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
+import { PlayerState } from '../common/PlayerState';
 import { RepeatMode } from '../common/RepeatMode';
 
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
