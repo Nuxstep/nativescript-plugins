@@ -55,7 +55,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return this.spotifyAppRemoteInstance.isConnected();
 	}
 
-	private async _getPlayerState(): Promise<object> {
+	private async getNativePlayerState(): Promise<object> {
 		return new Promise((resolve, reject) => {
 			try {
 				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().getPlayerState();
@@ -74,7 +74,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	}
 
 	public async getPlayerState(): Promise<PlayerState> {
-		const data = await this._getPlayerState();
+		const data = await this.getNativePlayerState();
 		return this.buildPlayerState(data);
 	}
 
