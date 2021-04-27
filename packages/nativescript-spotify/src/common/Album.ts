@@ -1,6 +1,6 @@
 export class Album {
-	name: string;
-	uri: string;
+	public name: string;
+	public uri: string;
 
 	constructor(name: string, uri: string) {
 		this.name = name;
