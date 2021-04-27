@@ -1,7 +1,7 @@
 import * as application from '@nativescript/core/application';
-import { SpotifyCommon } from '../../common';
+import { SpotifyAppRemoteCommon, PlayerState } from '../../common';
 
-export class SpotifyAppRemote extends SpotifyCommon {
+export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	private clientId: string;
 	private redirectUri: string;
 	private spotifyAppRemoteInstance: com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -51,6 +51,29 @@ export class SpotifyAppRemote extends SpotifyCommon {
 
 	public isConnected(): boolean {
 		return this.spotifyAppRemoteInstance.isConnected();
+	}
+
+	public async _getPlayerState(): Promise<object> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().getPlayerState();
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult(data) {
+							resolve(data);
+						},
+					})
+				);
+			} catch (ex) {
+				reject(ex);
+			}
+		});
+	}
+
+	public async getPlayerState(): Promise<PlayerState> {
+		const data = await this._getPlayerState();
+		return this.buildPlayerState(data);
 	}
 
 	public async pause(): Promise<boolean> {

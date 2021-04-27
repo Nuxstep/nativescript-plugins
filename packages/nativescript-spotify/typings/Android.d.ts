@@ -29,6 +29,7 @@ declare module com {
 
 					// com.spotify.android.appremote.api.PlayerApi
 					export interface PlayerApi {
+						public getPlayerState(): com.spotify.protocol.client.CallResult;
 						public pause(): void;
 						public play(uri: string): void;
 						public resume(): void;
@@ -42,6 +43,21 @@ declare module com {
 						public static disconnect(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote): void;
 						public getPlayerApi(): com.spotify.android.appremote.api.PlayerApi;
 						public isConnected(): boolean;
+					}
+				}
+			}
+		}
+		export module protocol {
+			export module client {
+				// com.spotify.protocol.client.ClassResult<T>
+				export class CallResult {
+					public setResultCallback(callback: com.spotify.protocol.client.CallResult.ResultCallback);
+				}
+				export namespace CallResult {
+					// com.spotify.protocol.client.CallResult.ResultCallback<T>
+					// Same case as com.spotify.android.appremote.api.Connector.ConnectionListener
+					export class ResultCallback {
+						constructor(implementation: { onResult(data: any): void });
 					}
 				}
 			}

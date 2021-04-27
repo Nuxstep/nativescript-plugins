@@ -48,6 +48,21 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 		}
 	}
 
+	public async getPlayerState() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			const state = await this.spotify.getPlayerState();
+			console.log(state);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
 	public async pause() {
 		try {
 			this.checkConnected();
