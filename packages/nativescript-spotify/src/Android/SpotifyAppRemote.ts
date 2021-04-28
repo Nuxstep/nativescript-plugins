@@ -1,5 +1,8 @@
 import * as application from '@nativescript/core/application';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
+import { ContentType } from '../common/ContentType';
+import { ListItem } from '../common/ListItem';
+import { ListItems } from '../common/ListItems';
 import { PlayerState } from '../common/PlayerState';
 import { RepeatMode } from '../common/RepeatMode';
 
@@ -202,5 +205,53 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				reject(exception);
 			}
 		});
+	}
+
+	private async getNativeRecommendedContentItems(type: ContentType): Promise<any> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = this.spotifyAppRemoteInstance.getContentApi().getRecommendedContentItems(type);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult(data) {
+							resolve(data);
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
+	}
+
+	public async getRecommendedContentItems(type: ContentType): Promise<ListItems> {
+		const data = await this.getNativeRecommendedContentItems(type);
+		return this.buildListItems(data);
+	}
+
+	private async getNativeChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<any> {
+		return new Promise((resolve, reject) => {
+			try {
+				const nativeListItem = new com.spotify.protocol.types.ListItem(item.id, item.uri, new com.spotify.protocol.types.ImageUri(item.imageUri.raw), item.title, item.subtitle, item.playable, item.hasChildren);
+
+				const callResult = this.spotifyAppRemoteInstance.getContentApi().getChildrenOfItem(nativeListItem, perpage, offset);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult(data) {
+							resolve(data);
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
+	}
+
+	public async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems> {
+		const data = await this.getNativeChildrenOfItem(item, perpage, offset);
+		return this.buildListItems(data);
 	}
 }

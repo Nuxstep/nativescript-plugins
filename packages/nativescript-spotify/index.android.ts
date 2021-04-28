@@ -14,9 +14,24 @@ export * from './src/common/Album';
 export * from './src/common/Artist';
 
 /**
+ * ContentType
+ */
+export * from './src/common/ContentType';
+
+/**
  * ImageUri
  */
 export * from './src/common/ImageUri';
+
+/**
+ * ListItem
+ */
+export * from './src/common/ListItem';
+
+/**
+ * ListItems
+ */
+export * from './src/common/ListItems';
 
 /**
  * PlayerOptions

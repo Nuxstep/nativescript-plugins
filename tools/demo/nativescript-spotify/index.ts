@@ -1,10 +1,13 @@
+import { ItemEventData } from '@nativescript/core';
+import { SpotifyAppRemote, ContentType, RepeatMode } from '@nuxstep/nativescript-spotify';
 import { DemoSharedBase } from '../utils';
-import { SpotifyAppRemote, RepeatMode } from '@nuxstep/nativescript-spotify';
 
 export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	// UI
 	public loading: boolean = false;
 	public connected: boolean = false;
+	public items = [];
+	public listHeight = 0;
 
 	// State
 	private spotify: SpotifyAppRemote;
@@ -201,5 +204,38 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 		} catch (ex) {
 			console.log(`Error: ${ex}`);
 		}
+	}
+
+	public async showRecommendedContentItems() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			// Get recommended content
+			const contentItems = await this.spotify.getRecommendedContentItems(ContentType.DEFAULT);
+
+			// Get children list
+			const childrenList = await this.spotify.getChildrenOfItem(contentItems.items[0], 6, 0);
+
+			// Map children
+			const children = childrenList.items.map((child) => ({
+				title: child.title,
+				image: child.imageUri.raw,
+				uri: child.uri,
+			}));
+
+			this.set('items', children);
+			this.set('listHeight', 60 * children.length);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async onItemTap(args: ItemEventData) {
+		console.log(this.items[args.index].uri);
+		await this.spotify.play(this.items[args.index].uri);
 	}
 }

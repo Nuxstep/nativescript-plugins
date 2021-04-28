@@ -1,0 +1,11 @@
+.cover {
+	height: 50;
+	width: 50;
+	margin: 10 0;
+}
+
+.title {
+	margin-left: 25;
+	vertical-align: center;
+	font-size: 18;
+}

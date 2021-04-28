@@ -121,6 +121,29 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * @memberof SpotifyAppRemote
 	 */
 	public async skipPrevious(): Promise<void>;
+
+	/**
+	 * Get a list of recommended content
+	 *
+	 * @param {ContentType} type The type of content you want to fetch
+	 * @return {Promise<ListItems>} Resolves to an instance of ListItems
+	 * @memberof SpotifyAppRemote
+	 * @see ContentType
+	 */
+	public async getRecommendedContentItems(type: ContentType): Promise<ListItems>;
+
+	/**
+	 * Get a list of child items of a browsable (non-playable) content item
+	 *
+	 * @param {ListItem} item The content item (retrieved from getRecommendedContentItems)
+	 * of which you want to access the children
+	 * @param {number} perpage The number of children to fetch
+	 * @param {number} offset Index of first child item to fetch, 0-indexed
+	 * @return {Promise<ListItems>} Resolves to an instance of ListItems
+	 * @memberof SpotifyAppRemote
+	 * @see ListItem
+	 */
+	public async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems>;
 }
 
 /**
@@ -190,6 +213,21 @@ export class Artist {
 }
 
 /**
+ * Content type
+ *
+ * @export
+ * @enum {string}
+ */
+export enum ContentType {
+	AUTOMOTIVE = 'AUTOMOTIVE',
+	DEFAULT = 'DEFAULT',
+	FITNESS = 'FITNESS',
+	NAVIGATION = 'NAVIGATION',
+	SLEEP = 'SLEEP',
+	WAKE = 'WAKE',
+}
+
+/**
  * Track image URI
  *
  * @export
@@ -211,6 +249,150 @@ export class ImageUri {
 	 * @memberof ImageUri
 	 */
 	constructor(raw: string);
+}
+
+/**
+ * List item
+ *
+ * @export
+ * @class ListItem
+ */
+export class ListItem {
+	/**
+	 * Item id
+	 *
+	 * @type {string}
+	 * @memberof ListItem
+	 */
+	public id: string;
+
+	/**
+	 * Item URI
+	 *
+	 * @type {string}
+	 * @memberof ListItem
+	 */
+	public uri: string;
+
+	/**
+	 * Image URI
+	 *
+	 * @type {ImageUri}
+	 * @memberof ListItem
+	 * @see ImageUri
+	 */
+	public imageUri: ImageUri;
+
+	/**
+	 * Item title
+	 *
+	 * @type {string}
+	 * @memberof ListItem
+	 */
+	public title: string;
+
+	/**
+	 * Item subtitle
+	 *
+	 * @type {string}
+	 * @memberof ListItem
+	 */
+	public subtitle: string;
+
+	/**
+	 * True if item is playable, false if otherwhise
+	 *
+	 * @type {boolean}
+	 * @memberof ListItem
+	 */
+	public playable: boolean;
+
+	/**
+	 * True if item has children, false if otherwise
+	 *
+	 * @type {boolean}
+	 * @memberof ListItem
+	 */
+	public hasChildren: boolean;
+
+	/**
+	 * Creates an instance of ListItem
+	 *
+	 * @param {string} id Item id
+	 * @param {string} uri Item URI
+	 * @param {ImageUri} imageUri Image URI
+	 * @param {string} title Item title
+	 * @param {string} subtitle Item subtitle
+	 * @param {boolean} playable True if item is playable, false if otherwise
+	 * @param {boolean} hasChildren True if item has children, false if otherwise
+	 * @memberof ListItem
+	 * @see ImageUri
+	 */
+	constructor(id: string, uri: string, imageUri: ImageUri, title: string, subtitle: string, playable: boolean, hasChildren: boolean) {
+		this.id = id;
+		this.uri = uri;
+		this.imageUri = imageUri;
+		this.title = title;
+		this.subtitle = subtitle;
+		this.playable = playable;
+		this.hasChildren = hasChildren;
+	}
+}
+
+/**
+ * List items
+ *
+ * @export
+ * @class ListItems
+ */
+export class ListItems {
+	/**
+	 * Limit
+	 *
+	 * @type {number}
+	 * @memberof ListItems
+	 */
+	public limit: number;
+
+	/**
+	 * Offset
+	 *
+	 * @type {number}
+	 * @memberof ListItems
+	 */
+	public offset: number;
+
+	/**
+	 * Total
+	 *
+	 * @type {number}
+	 * @memberof ListItems
+	 */
+	public total: number;
+
+	/**
+	 * Items
+	 *
+	 * @type {Array<ListItem>}
+	 * @memberof ListItems
+	 */
+	public items: Array<ListItem>;
+
+	/**
+	 * Creates an instance of ListItems
+	 *
+	 * @param {number} limit Limit
+	 * @param {number} offset Offset
+	 * @param {number} total Total
+	 * @param {Array<ListItem>} items Items
+	 * @memberof ListItems
+	 */
+	constructor(limit: number, offset: number, total: number, items: Array<ListItem>) {
+		this.limit = limit;
+		this.offset = offset;
+		this.total = total;
+		this.items = items;
+	}
 }
 
 /**

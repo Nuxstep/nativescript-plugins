@@ -20,6 +20,20 @@
             <Button text="Set Shuffle To Off" isEnabled="{{ connected && !loading }}" tap="{{ setShuffleToOff }}" class="btn btn-primary"/>
             <Button text="Skip Next" isEnabled="{{ connected && !loading }}" tap="{{ skipNext }}" class="btn btn-primary"/>
             <Button text="Skip Previous" isEnabled="{{ connected && !loading }}" tap="{{ skipPrevious }}" class="btn btn-primary"/>
+            <Button text="Show Recommended Content Items" isEnabled="{{ connected && !loading }}" tap="{{ showRecommendedContentItems }}" class="btn btn-primary"/>
+            <ListView
+              items="{{ items }}"
+              itemTap="{{ onItemTap }}"
+              rowHeight="60"
+              height="{{ listHeight }}"
+            >
+              <ListView.itemTemplate>
+                <StackLayout orientation="horizontal" class="item">
+                  <Image src="{{ image }}" class="cover" />
+                  <Label text="{{ title }}" textWrap="true" class="title" />
+                </StackLayout>
+              </ListView.itemTemplate>
+            </ListView>
           </StackLayout>
         </ScrollView>
     </StackLayout>

@@ -2,10 +2,12 @@ import { Observable } from '@nativescript/core';
 import { Artist } from './Artist';
 import { Album } from './Album';
 import { ImageUri } from './ImageUri';
+import { ListItems } from './ListItems';
 import { PlayerOptions } from './PlayerOptions';
 import { PlayerRestrictions } from './PlayerRestrictions';
 import { PlayerState } from './PlayerState';
 import { Track } from './Track';
+import { ListItem } from './ListItem';
 
 export class SpotifyAppRemoteCommon extends Observable {
 	private buildArtists(data: any): Array<Artist> {
@@ -29,5 +31,21 @@ export class SpotifyAppRemoteCommon extends Observable {
 			new PlayerOptions(data.playbackOptions?.isShuffling, data.playbackOptions?.repeatMode),
 			new PlayerRestrictions(data.playbackRestrictions?.canSkipNext, data.playbackRestrictions?.canSkipPrev, data.playbackRestrictions?.canRepeatTrack, data.playbackRestrictions?.canRepeatContext, data.playbackRestrictions?.canToggleShuffle, data.playbackRestrictions?.canSeek)
 		);
+	}
+
+	private buildListItem(data: any): Array<ListItem> {
+		const items: Array<ListItem> = [];
+
+		for (let i = 0; i < data.length; i++) {
+			items.push(new ListItem(data[i].id, data[i].uri, new ImageUri(data[i].imageUri.raw), data[i].title, data[i].subtitle, data[i].playable, data[i].hasChildren));
+		}
+
+		return items;
+	}
+
+	protected buildListItems(data: any): ListItems {
+		const items = this.buildListItem(data.items);
+
+		return new ListItems(data.limit, data.offset, data.total, items);
 	}
 }

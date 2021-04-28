@@ -1,0 +1,8 @@
+export enum ContentType {
+	AUTOMOTIVE = 'AUTOMOTIVE',
+	DEFAULT = 'DEFAULT',
+	FITNESS = 'FITNESS',
+	NAVIGATION = 'NAVIGATION',
+	SLEEP = 'SLEEP',
+	WAKE = 'WAKE',
+}

@@ -27,6 +27,13 @@ declare module com {
 						}
 					}
 
+					// com.spotify.android.appremote.api.ContentApi
+					export interface ContentApi {
+						public getChildrenOfItem(item: com.spotify.protocol.types.ListItem, perpage: number, offset: number): com.spotify.protocol.client.CallResult;
+						public getRecommendedContentItems(type: string): com.spotify.protocol.client.CallResult;
+						public playContentItem(item: com.spotify.protocol.types.ListItem): com.spotify.protocol.client.CallResult;
+					}
+
 					// com.spotify.android.appremote.api.PlayerApi
 					export interface PlayerApi {
 						public getPlayerState(): com.spotify.protocol.client.CallResult;
@@ -43,6 +50,7 @@ declare module com {
 					export class SpotifyAppRemote {
 						public static connect(context: android.content.Context, params: com.spotify.android.appremote.api.ConnectionParams, connectionListener: com.spotify.android.appremote.api.Connector.ConnectionListener): void;
 						public static disconnect(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote): void;
+						public getContentApi(): com.spotify.android.appremote.api.ContentApi;
 						public getPlayerApi(): com.spotify.android.appremote.api.PlayerApi;
 						public isConnected(): boolean;
 					}
@@ -61,6 +69,25 @@ declare module com {
 					export class ResultCallback {
 						constructor(implementation: { onResult(data: any): void });
 					}
+				}
+			}
+			export module types {
+				// com.spotify.protocol.types.ImageUri
+				export class ImageUri {
+					public raw: string;
+					constructor(raw: string);
+				}
+
+				// com.spotify.protocol.types.ListItem
+				export class ListItem {
+					public id: string;
+					public uri: string;
+					public imageUri: com.spotify.protocol.types.ImageUri;
+					public title: string;
+					public subtitle: string;
+					public playable: boolean;
+					public hasChildren: boolean;
+					constructor(id: string, uri: string, imageUri: com.spotify.protocol.types.ImageUri, title: string, subtitle: string, playable: boolean, hasChildren: boolean);
 				}
 			}
 		}
