@@ -5,7 +5,7 @@ npm run setup
 npm start
 ```
 
-- @nuxstep/nativescript-spotify
+- @nuxstep/nativescript-spotify (in development)
 
 # How to use?
 
