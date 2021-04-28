@@ -235,7 +235,6 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	}
 
 	public async onItemTap(args: ItemEventData) {
-		console.log(this.items[args.index].uri);
 		await this.spotify.play(this.items[args.index].uri);
 	}
 }
