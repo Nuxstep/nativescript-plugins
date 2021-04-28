@@ -1,6 +1,7 @@
 import { ItemEventData } from '@nativescript/core';
 import { SpotifyAppRemote, ContentType, RepeatMode } from '@nuxstep/nativescript-spotify';
 import { DemoSharedBase } from '../utils';
+import * as credentials from './credentials.json';
 
 export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	// UI
@@ -13,7 +14,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	private spotify: SpotifyAppRemote;
 
 	public async connect() {
-		this.spotify = new SpotifyAppRemote('b994fed6744b4cf990f41f33cd5d9fc6', 'plugindemo://spotify');
+		this.spotify = new SpotifyAppRemote(credentials.clientId, 'plugindemo://spotify');
 
 		try {
 			this.set('loading', true);
