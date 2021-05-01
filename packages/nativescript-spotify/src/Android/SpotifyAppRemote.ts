@@ -44,13 +44,8 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return;
 	}
 
-	public async disconnect(pauseBeforeDisconnect: boolean): Promise<void> {
-		if (pauseBeforeDisconnect) {
-			await this.pause();
-		}
-
+	public async disconnect(): Promise<void> {
 		com.spotify.android.appremote.api.SpotifyAppRemote.disconnect(this.spotifyAppRemoteInstance);
-
 		return;
 	}
 

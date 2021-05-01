@@ -43,7 +43,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.disconnect(true);
+			await this.spotify.disconnect();
 
 			this.set('loading', false);
 			this.set('connected', false);

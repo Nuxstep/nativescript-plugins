@@ -29,11 +29,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * Disconnect from Spotify App Remote
 	 *
 	 * @async
-	 * @param {boolean} pauseBeforeDisconnect Whether to pause the playback before disconnecting
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async disconnect(pauseBeforeDisconnect: boolean): Promise<void>;
+	public async disconnect(): Promise<void>;
 
 	/**
 	 * Check if Spotify App Remote is currently connected
