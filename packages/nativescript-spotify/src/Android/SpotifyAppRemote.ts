@@ -1,4 +1,5 @@
 import * as application from '@nativescript/core/application';
+import { AndroidUtils } from './AndroidUtils';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
 import { ContentType } from '../common/ContentType';
 import { ListItem } from '../common/ListItem';
@@ -7,25 +8,27 @@ import { PlayerState } from '../common/PlayerState';
 import { RepeatMode } from '../common/RepeatMode';
 
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
-	private clientId: string;
-	private redirectUri: string;
-	private spotifyAppRemoteInstance: com.spotify.android.appremote.api.SpotifyAppRemote;
+	private static clientId: string;
+	private static redirectUri: string;
+	private static appRemoteInstance: com.spotify.android.appremote.api.SpotifyAppRemote;
 
-	constructor(clientId: string, redirectUri: string) {
-		super();
-		this.clientId = clientId;
-		this.redirectUri = redirectUri;
+	public static setClientId(clientId: string): void {
+		SpotifyAppRemote.clientId = clientId;
 	}
 
-	private createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
-		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
+	public static setRedirectUri(redirectUri: string): void {
+		SpotifyAppRemote.redirectUri = redirectUri;
 	}
 
-	private requestAuthorization(): Promise<com.spotify.android.appremote.api.SpotifyAppRemote> {
+	private static createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
+		return new com.spotify.android.appremote.api.ConnectionParams.Builder(SpotifyAppRemote.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
+	}
+
+	private static requestAuthorization(): Promise<com.spotify.android.appremote.api.SpotifyAppRemote> {
 		return new Promise((resolve, reject) => {
 			com.spotify.android.appremote.api.SpotifyAppRemote.connect(
 				application.android.context,
-				this.createConnectionParams(),
+				SpotifyAppRemote.createConnectionParams(),
 				new com.spotify.android.appremote.api.Connector.ConnectionListener({
 					onConnected(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote) {
 						resolve(spotifyAppRemote);
@@ -39,24 +42,24 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async connect(): Promise<void> {
-		this.spotifyAppRemoteInstance = await this.requestAuthorization();
+	public static async connect(): Promise<void> {
+		SpotifyAppRemote.appRemoteInstance = await SpotifyAppRemote.requestAuthorization();
 		return;
 	}
 
-	public async disconnect(): Promise<void> {
-		com.spotify.android.appremote.api.SpotifyAppRemote.disconnect(this.spotifyAppRemoteInstance);
+	public static async disconnect(): Promise<void> {
+		com.spotify.android.appremote.api.SpotifyAppRemote.disconnect(SpotifyAppRemote.appRemoteInstance);
 		return;
 	}
 
-	public isConnected(): boolean {
-		return this.spotifyAppRemoteInstance.isConnected();
+	public static isConnected(): boolean {
+		return SpotifyAppRemote.appRemoteInstance.isConnected();
 	}
 
-	private async getNativePlayerState(): Promise<object> {
+	private static async getNativePlayerState(): Promise<object> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().getPlayerState();
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().getPlayerState();
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -71,15 +74,15 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async getPlayerState(): Promise<PlayerState> {
-		const data = await this.getNativePlayerState();
-		return this.buildPlayerState(data);
+	public static async getPlayerState(): Promise<PlayerState> {
+		const data = await SpotifyAppRemote.getNativePlayerState();
+		return AndroidUtils.buildPlayerState(data);
 	}
 
-	public async pause(): Promise<void> {
+	public static async pause(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().pause();
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().pause();
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -94,10 +97,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async play(uri: string): Promise<void> {
+	public static async play(uri: string): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().play(uri);
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().play(uri);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -112,10 +115,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async resume(): Promise<void> {
+	public static async resume(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().resume();
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().resume();
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -130,10 +133,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async setRepeat(repeatMode: RepeatMode): Promise<void> {
+	public static async setRepeat(repeatMode: RepeatMode): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().setRepeat(repeatMode);
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().setRepeat(repeatMode);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -148,10 +151,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async setShuffle(enable: boolean): Promise<void> {
+	public static async setShuffle(enable: boolean): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().setShuffle(enable);
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().setShuffle(enable);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -166,10 +169,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async skipNext(): Promise<void> {
+	public static async skipNext(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().skipNext();
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().skipNext();
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -184,10 +187,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async skipPrevious(): Promise<void> {
+	public static async skipPrevious(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getPlayerApi().skipPrevious();
+				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().skipPrevious();
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -202,10 +205,10 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	private async getNativeRecommendedContentItems(type: ContentType): Promise<any> {
+	private static async getNativeRecommendedContentItems(type: ContentType): Promise<any> {
 		return new Promise((resolve, reject) => {
 			try {
-				const callResult = this.spotifyAppRemoteInstance.getContentApi().getRecommendedContentItems(type);
+				const callResult = SpotifyAppRemote.appRemoteInstance.getContentApi().getRecommendedContentItems(type);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -220,17 +223,17 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async getRecommendedContentItems(type: ContentType): Promise<ListItems> {
-		const data = await this.getNativeRecommendedContentItems(type);
-		return this.buildListItems(data);
+	public static async getRecommendedContentItems(type: ContentType): Promise<ListItems> {
+		const data = await SpotifyAppRemote.getNativeRecommendedContentItems(type);
+		return AndroidUtils.buildListItems(data);
 	}
 
-	private async getNativeChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<any> {
+	private static async getNativeChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<any> {
 		return new Promise((resolve, reject) => {
 			try {
 				const nativeListItem = new com.spotify.protocol.types.ListItem(item.id, item.uri, new com.spotify.protocol.types.ImageUri(item.imageUri.raw), item.title, item.subtitle, item.playable, item.hasChildren);
 
-				const callResult = this.spotifyAppRemoteInstance.getContentApi().getChildrenOfItem(nativeListItem, perpage, offset);
+				const callResult = SpotifyAppRemote.appRemoteInstance.getContentApi().getChildrenOfItem(nativeListItem, perpage, offset);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -245,8 +248,8 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems> {
-		const data = await this.getNativeChildrenOfItem(item, perpage, offset);
-		return this.buildListItems(data);
+	public static async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems> {
+		const data = await SpotifyAppRemote.getNativeChildrenOfItem(item, perpage, offset);
+		return AndroidUtils.buildListItems(data);
 	}
 }

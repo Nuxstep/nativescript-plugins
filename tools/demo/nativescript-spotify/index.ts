@@ -10,16 +10,14 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	public items = [];
 	public listHeight = 0;
 
-	// State
-	private spotify: SpotifyAppRemote;
-
 	public async connect() {
-		this.spotify = new SpotifyAppRemote(credentials.clientId, 'plugindemo://spotify');
+		SpotifyAppRemote.setClientId(credentials.clientId);
+		SpotifyAppRemote.setRedirectUri('plugindemo://spotify-login-callback');
 
 		try {
 			this.set('loading', true);
 
-			await this.spotify.connect();
+			await SpotifyAppRemote.connect();
 			this.set('connected', true);
 			console.log('Connected');
 
@@ -30,7 +28,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	}
 
 	public checkConnected() {
-		if (!this.spotify.isConnected()) {
+		if (!SpotifyAppRemote.isConnected()) {
 			console.log('Spotify is not connected');
 			this.set('connected', false);
 			return;
@@ -43,7 +41,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.disconnect();
+			await SpotifyAppRemote.disconnect();
 
 			this.set('loading', false);
 			this.set('connected', false);
@@ -58,7 +56,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			const state = await this.spotify.getPlayerState();
+			const state = await SpotifyAppRemote.getPlayerState();
 			console.log(state);
 
 			this.set('loading', false);
@@ -73,7 +71,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.pause();
+			await SpotifyAppRemote.pause();
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -87,7 +85,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.play('spotify:playlist:37i9dQZF1DX2sUQwD7tbmL');
+			await SpotifyAppRemote.play('spotify:playlist:37i9dQZF1DX2sUQwD7tbmL');
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -101,7 +99,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.resume();
+			await SpotifyAppRemote.resume();
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -115,7 +113,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.setRepeat(RepeatMode.OFF);
+			await SpotifyAppRemote.setRepeat(RepeatMode.OFF);
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -129,7 +127,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.setRepeat(RepeatMode.ALL);
+			await SpotifyAppRemote.setRepeat(RepeatMode.ALL);
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -143,7 +141,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.setRepeat(RepeatMode.ONE);
+			await SpotifyAppRemote.setRepeat(RepeatMode.ONE);
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -157,7 +155,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.setShuffle(true);
+			await SpotifyAppRemote.setShuffle(true);
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -171,7 +169,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.setShuffle(false);
+			await SpotifyAppRemote.setShuffle(false);
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -185,7 +183,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.skipNext();
+			await SpotifyAppRemote.skipNext();
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -199,7 +197,7 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			await this.spotify.skipPrevious();
+			await SpotifyAppRemote.skipPrevious();
 
 			this.set('loading', false);
 		} catch (ex) {
@@ -214,10 +212,10 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 			this.set('loading', true);
 
 			// Get recommended content
-			const contentItems = await this.spotify.getRecommendedContentItems(ContentType.DEFAULT);
+			const contentItems = await SpotifyAppRemote.getRecommendedContentItems(ContentType.DEFAULT);
 
 			// Get children list
-			const childrenList = await this.spotify.getChildrenOfItem(contentItems.items[0], 6, 0);
+			const childrenList = await SpotifyAppRemote.getChildrenOfItem(contentItems.items[0], 6, 0);
 
 			// Map children
 			const children = childrenList.items.map((child) => ({
@@ -236,6 +234,6 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	}
 
 	public async onItemTap(args: ItemEventData) {
-		await this.spotify.play(this.items[args.index].uri);
+		await SpotifyAppRemote.play(this.items[args.index].uri);
 	}
 }

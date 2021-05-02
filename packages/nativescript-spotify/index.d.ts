@@ -9,38 +9,51 @@ import { SpotifyAppRemoteCommon } from './src/common/SpotifyAppRemoteCommon';
  */
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	/**
-	 * Creates an instance of SpotifyAppRemote
-	 * @param {string} clientId Spotify Client ID
-	 * @param {string} redirectUri App Redirect URI
+	 * Set Spotify client Id
+	 *
+	 * @static
+	 * @param {string} clientId Spotify client id
 	 * @memberof SpotifyAppRemote
 	 */
-	constructor(clientId: string, redirectUri: string);
+	public static setClientId(clientId: string): void;
+
+	/**
+	 * Set app redirect Uri
+	 *
+	 * @static
+	 * @param {string} redirectUri App redirect URI
+	 * @memberof SpotifyAppRemote
+	 */
+	public static setRedirectUri(redirectUri: string): void;
 
 	/**
 	 * Connect to Spotify App Remote
 	 *
+	 * @static
 	 * @async
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async connect(): Promise<void>;
+	public static async connect(): Promise<void>;
 
 	/**
 	 * Disconnect from Spotify App Remote
 	 *
 	 * @async
+	 * @static
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async disconnect(): Promise<void>;
+	public static async disconnect(): Promise<void>;
 
 	/**
 	 * Check if Spotify App Remote is currently connected
 	 *
+	 * @static
 	 * @return {boolean} True if connected, false if not
 	 * @memberof SpotifyAppRemote
 	 */
-	public isConnected(): boolean;
+	public static isConnected(): boolean;
 
 	/**
 	 * Get the player state of the Spotify app
@@ -50,90 +63,101 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * @memberof SpotifyAppRemote
 	 * @see PlayerState
 	 */
-	public async getPlayerState(): Promise<PlayerState>;
+	public static async getPlayerState(): Promise<PlayerState>;
 
 	/**
 	 * Pause playback if it's current playing
 	 *
+	 * @static
 	 * @async
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async pause(): Promise<void>;
+	public static async pause(): Promise<void>;
 
 	/**
 	 * Play the given Spotify uri
 	 *
+	 * @static
 	 * @async
 	 * @param {string} uri uri to play
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async play(uri: string): Promise<void>;
+	public static async play(uri: string): Promise<void>;
 
 	/**
 	 * Resume playback if it's currently paused
 	 *
+	 * @static
 	 * @async
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async resume(): Promise<void>;
+	public static async resume(): Promise<void>;
 
 	/**
 	 * Set repeat mode to repeatMode
 	 *
+	 * @static
 	 * @async
 	 * @param {RepeatMode} repeatMode Must be one of OFF, ALL, or ONE
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 * @see RepeatMode
 	 */
-	public async setRepeat(repeatMode: RepeatMode): Promise<void>;
+	public static async setRepeat(repeatMode: RepeatMode): Promise<void>;
 
 	/**
 	 * Set the shuffle state
 	 *
+	 * @static
 	 * @async
 	 * @param {boolean} enabled True enables shuffling, false turns it off
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 * @see RepeatMode
 	 */
-	public async setShuffle(enabled: boolean): Promise<void>;
+	public static async setShuffle(enabled: boolean): Promise<void>;
 
 	/**
 	 * Skip to the next track in the currently playing context if there is one
 	 *
+	 * @static
 	 * @async
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async skipNext(): Promise<void>;
+	public static async skipNext(): Promise<void>;
 
 	/**
 	 * Restart the current track or, if current track has played for less than
 	 * 3 seconds, skip to the previous track in the currently playing context
 	 *
+	 * @static
 	 * @async
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
-	public async skipPrevious(): Promise<void>;
+	public static async skipPrevious(): Promise<void>;
 
 	/**
 	 * Get a list of recommended content
 	 *
+	 * @static
+	 * @async
 	 * @param {ContentType} type The type of content you want to fetch
 	 * @return {Promise<ListItems>} Resolves to an instance of ListItems
 	 * @memberof SpotifyAppRemote
 	 * @see ContentType
 	 */
-	public async getRecommendedContentItems(type: ContentType): Promise<ListItems>;
+	public static async getRecommendedContentItems(type: ContentType): Promise<ListItems>;
 
 	/**
 	 * Get a list of child items of a browsable (non-playable) content item
 	 *
+	 * @static
+	 * @async
 	 * @param {ListItem} item The content item (retrieved from getRecommendedContentItems)
 	 * of which you want to access the children
 	 * @param {number} perpage The number of children to fetch
@@ -142,7 +166,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	 * @memberof SpotifyAppRemote
 	 * @see ListItem
 	 */
-	public async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems>;
+	public static async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems>;
 }
 
 /**
