@@ -1,7 +1,6 @@
-import { ItemEventData } from '@nativescript/core';
+import { ItemEventData, isIOS } from '@nativescript/core';
 import { SpotifyAppRemote, ContentType, RepeatMode } from '@nuxstep/nativescript-spotify';
 import { DemoSharedBase } from '../utils';
-import * as credentials from './credentials.json';
 
 export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	// UI
@@ -11,11 +10,14 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	public listHeight = 0;
 
 	public async connect() {
-		SpotifyAppRemote.setClientId(credentials.clientId);
-		SpotifyAppRemote.setRedirectUri('plugindemo://spotify-login-callback');
-
 		try {
 			this.set('loading', true);
+
+			// If platform is iOS, we need to open the app and start playback
+			// This is an iOS-specific limitation
+			if (isIOS) {
+				await SpotifyAppRemote.authorizeAndPlayURI();
+			}
 
 			await SpotifyAppRemote.connect();
 			this.set('connected', true);

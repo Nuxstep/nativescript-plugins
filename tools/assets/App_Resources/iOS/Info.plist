@@ -54,5 +54,20 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>spotify</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.nuxstep.nativescript.plugindemo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>plugindemo</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

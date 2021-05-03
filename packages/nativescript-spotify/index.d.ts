@@ -27,6 +27,32 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	public static setRedirectUri(redirectUri: string): void;
 
 	/**
+	 * Parse out an access token or error description from an URL passed to
+	 * to application:openURL:options:
+	 *
+	 * iOS only
+	 *
+	 * @static
+	 * @param {string} url
+	 * @memberof SpotifyAppRemote
+	 */
+	public static setAuthorizationParameters(url: NSURL): void;
+
+	/**
+	 * Open Spotify app to obtain access and start playback
+	 *
+	 * iOS only
+	 *
+	 * @static
+	 * @async
+	 * @param {string} [uri=''] The URI to play. Use a blank string to attempt
+	 * to play the user’s last song
+	 * @return {*}  {Promise<void>} Resolves when action is executed
+	 * @memberof SpotifyAppRemote
+	 */
+	public static async authorizeAndPlayURI(uri: string = ''): Promise<void>;
+
+	/**
 	 * Connect to Spotify App Remote
 	 *
 	 * @static
