@@ -78,4 +78,14 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	public static async connect(): Promise<void> {
 		SpotifyAppRemote.appRemote.connect();
 	}
+
+	// public static async pause(): Promise<void> {
+	// 	return new Promise((resolve, reject) => {
+	// 		SpotifyAppRemote.appRemote.playerAPI.pause((data) => {
+	// 			console.log('dentro');
+	// 			console.log(data);
+	// 			resolve();
+	// 		});
+	// 	});
+	// }
 }

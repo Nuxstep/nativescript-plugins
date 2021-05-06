@@ -61,7 +61,7 @@ You'll need an **App Fingerprint** too. Refer to https://developer.spotify.com/d
 
 ### iOS
 
-In your app project, head over to `App_Resources/iOS` and open `Info.plist`. On the end of the file, before the last `</dict>` tag closes, add the following:
+In your app project, head over to `App_Resources/iOS` and open `Info.plist`. At the end of the file, before the last `</dict>` tag closes, add the following:
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>
@@ -142,6 +142,7 @@ In the page where you want to use `SpotifyAppRemote`, add to the top of the file
 
 ```ts
 import { isIOS } from '@nativescript/core';
+import { SpotifyAppRemote } from '@nuxstep/nativescript-spotify';
 ```
 
 Then, somewhere you want, connect to `SpotifyAppRemote`:

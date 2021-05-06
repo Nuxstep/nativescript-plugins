@@ -1,8 +1,7 @@
 import { SpotifyAppRemote } from './SpotifyAppRemote';
 
-@NativeClass()
 export class SpotifyAppRemoteDelegate implements SPTAppRemoteDelegate {
-	public static ObjCProtocols = [SPTAppRemoteDelegate];
+	// public static ObjCProtocols = [SPTAppRemoteDelegate];
 
 	appRemoteDidEstablishConnection(appRemote: SPTAppRemote): void {
 		console.log('[iOS] SpotifyAppRemote: App remote did establish connection');
