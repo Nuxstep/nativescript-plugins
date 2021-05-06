@@ -12,6 +12,12 @@ Later (maybe), we can implement the Spotify Authentication SDK and Web API for m
 
 ## Setup
 
+**Not** available on npm yet, but soon you'll be able to add to your project with:
+
+```bash
+ns plugin add @nuxstep/nativescript-spotify
+```
+
 ### Android
 
 In your app project, head over to `App_Resources/Android/src/main/res` and open `AndroidManifest.xml`. Inside the `<activity>` tag with the name `com.tns.NativeScriptActivity`, add the property `android:launchMode="singleTask"`, as follows:
@@ -36,11 +42,11 @@ In your app project, head over to `App_Resources/Android/src/main/res` and open 
 
   <data
     android:scheme="plugindemo"
-    android:host="spotify" />
+    android:host="spotify-login-callback" />
 </intent-filter>
 ```
 
-Here you will set the **Redirect URI** for the Spotify App Remote authentication (it reads as `plugindemo://spotify`). Change the `android:scheme` to something related to your app (like `myapp`) and host you can keep it as `spotify`. **Write down** your **Redirect URI**, you will need it to instantiate the `SpotifyAppRemote` class.
+Here you will set the **Redirect URI** for the Spotify App Remote authentication (it reads as `plugindemo://spotify-login-callback`). Change the `android:scheme` to something related to your app (like `myapp`) and host you can keep it as `spotify-login-callback`. **Write down** your **Redirect URI**, you will need it to set up the `SpotifyAppRemote` class.
 
 **Before** the `<application>` tag closes, add the following:
 
@@ -55,7 +61,59 @@ You'll need an **App Fingerprint** too. Refer to https://developer.spotify.com/d
 
 ### iOS
 
-Soon.
+In your app project, head over to `App_Resources/iOS` and open `Info.plist`. On the end of the file, before the last `</dict>` tag closes, add the following:
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>spotify</string>
+</array>
+```
+
+This allows the Spotify SDK to open the Spotify app through its URL scheme. After that, add the following:
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLName</key>
+    <string>com.nuxstep.nativescript.plugindemo</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>plugindemo</string>
+    </array>
+  </dict>
+</array>
+```
+
+Change `com.nuxstep.nativescript.plugindemo` to your **app bundle name**. Also, change `plugindemo` to your app **URL scheme**. Use the same **URL scheme** from Android for the sake of simplicity.
+
+In your **app entry point** (usually `app.ts`), import `SpotifyAppRemote` at the top of the file:
+
+```ts
+import { SpotifyAppRemote } from '@nuxstep/nativescript-spotify';
+```
+
+Then, implement a custom **app delegate** before your app starts, usually before `Application.run()` if you are using plain NativeScript.
+
+```ts
+/**
+ * Implement a custom AppDelegate on iOS so we can get the access token
+ * returned from Spotify and store it on SpotifyAppRemote class
+ */
+@NativeClass()
+class AppDelegate extends UIResponder implements UIApplicationDelegate {
+	public static ObjCProtocols = [UIApplicationDelegate];
+
+	applicationOpenURLOptions(_application: UIApplication, url: NSURL, _options: any): boolean {
+		SpotifyAppRemote.setAuthorizationParameters(url);
+		return true;
+	}
+}
+Application.ios.delegate = AppDelegate;
+```
+
+If you are **not** using TypeScript, refer to https://v7.docs.nativescript.org/core-concepts/application-lifecycle#ios-uiapplicationdelegate on how to implement the app delegate with JavaScript.
 
 ### Spotify Developer
 
@@ -63,21 +121,47 @@ Head over to https://developer.spotify.com/dashboard and register a developer ac
 
 In the dashboard, click on **CREATE AN APP** and provide a name and an description.
 
-Inside your app dashboard, click on **EDIT SETTINGS**. Set the **Redirect URI** as you have defined before (e.g. `myapp://spotify`) and click on **ADD**.
+Inside your app dashboard, click on **EDIT SETTINGS**. Set the **Redirect URI** as you have defined before (e.g. `myapp://spotify-login-callback`) and click on **ADD**.
+
+On section **Bundle IDs**, insert your app bundle name (e.g. `com.example.myapp`) and click on **ADD**. This one is for iOS.
 
 On section **Android Packages**, insert your **app package name** (e.g. `com.example.myapp`) and insert the **App Fingerprint** you've created before. Click on **ADD** and then on **SAVE** to finish.
 
-**Write down** your **Client ID**, you will need it to instantiate `SpotifyAppRemote` class.
+**Write down** your **Client ID**, you will need it to set up the `SpotifyAppRemote` class.
 
-## Usage
+### Usage
 
-**Not** available on npm yet, but soon you'll be able to add to your project with:
+First, you need to pass the **Client ID** and **Redirect URI** to the `SpotifyAppRemote` class. You can do that in your **app entry point** before the custom **app delegate**:
 
-```bash
-ns plugin add @nuxstep/nativescript-spotify
+```ts
+SpotifyAppRemote.setClientId('SPOTIFY_CLIENT_ID');
+SpotifyAppRemote.setRedirectUri('APP_REDIRECT_URI');
 ```
 
-If you want to test it in your app, refer to the demo (`apps/demo`) on how to include the plugin manually and how to use it.
+In the page where you want to use `SpotifyAppRemote`, add to the top of the file:
+
+```ts
+import { isIOS } from '@nativescript/core';
+```
+
+Then, somewhere you want, connect to `SpotifyAppRemote`:
+
+```ts
+/**
+ * If platform is iOS, we need to open the app and start playback
+ * before connecting to SpotifyAppRemote. This is an iOS-specific
+ * limitation.
+ */
+if (isIOS) {
+	await SpotifyAppRemote.authorizeAndPlayURI();
+}
+
+await SpotifyAppRemote.connect();
+```
+
+You can pass any **Spotify URI** to `authorizeAndPlayURI()`. If you pass an empty string or no parameter at all, it'll try to play the user's last played song.
+
+For the available methods, refer to the demo (`apps/demo` and `tools/demo/nativescript-spotify`). Those will be documented at a later time.
 
 ## License
 
