@@ -1,11 +1,17 @@
 declare class SPTAppRemote {
 	connectionParameters: SPTAppRemoteConnectionParams;
+	connected: boolean;
 	delegate: any;
+	playerAPI: SPTAppRemotePlayerAPI;
 
 	constructor(configuration: SPTConfiguration, logLevel: any);
 	public authorizeAndPlayURI(URI: string): boolean;
 	public authorizationParametersFromURL(url: NSURL): NSDictionary<string, string>;
 	public connect(): void;
+}
+
+declare interface SPTAppRemoteCallback {
+	(result: boolean, error: any): void;
 }
 
 declare class SPTAppRemoteConnectionParams {
@@ -23,6 +29,10 @@ declare enum SPTAppRemoteLogLevel {
 	SPTAppRemoteLogLevelDebug = 1,
 	SPTAppRemoteLogLevelInfo = 2,
 	SPTAppRemoteLogLevelError = 3,
+}
+
+declare interface SPTAppRemotePlayerAPI {
+	public playCallback(entityIdentifier: string, callback: SPTAppRemoteCallback): void;
 }
 
 declare class SPTConfiguration {
