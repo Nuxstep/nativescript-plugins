@@ -1,8 +1,8 @@
 declare class SPTAppRemote {
-	connectionParameters: SPTAppRemoteConnectionParams;
-	connected: boolean;
-	delegate: any;
-	playerAPI: SPTAppRemotePlayerAPI;
+	public connectionParameters: SPTAppRemoteConnectionParams;
+	public connected: boolean;
+	public delegate: any;
+	public playerAPI: SPTAppRemotePlayerAPI;
 
 	constructor(configuration: SPTConfiguration, logLevel: any);
 	public authorizeAndPlayURI(URI: string): boolean;
@@ -15,11 +15,11 @@ declare interface SPTAppRemoteCallback {
 }
 
 declare class SPTAppRemoteConnectionParams {
-	accessToken: string;
+	public accessToken: string;
 }
 
 declare interface SPTAppRemoteDelegate {
-	public appRemoteDidEstablishConnection(appRemote: SPTAppRemove): void;
+	public appRemoteDidEstablishConnection(appRemote: SPTAppRemote): void;
 	public appRemotedidFailConnectionAttemptWithError(appRemote: SPTAppRemote, error: NSError): void;
 	public appRemotedidDisconnectWithError(appRemote: SPTAppRemote, error: NSError): void;
 }
