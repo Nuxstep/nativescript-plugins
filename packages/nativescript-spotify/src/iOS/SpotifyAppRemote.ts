@@ -201,4 +201,15 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 			});
 		});
 	}
+
+	public static async setShuffle(enabled: boolean): Promise<void> {
+		return new Promise((resolve, reject) => {
+			SpotifyAppRemote.appRemote.playerAPI.setShuffleCallback(enabled, (_result: boolean, error: any) => {
+				if (error) {
+					reject(error);
+				}
+				resolve();
+			});
+		});
+	}
 }
