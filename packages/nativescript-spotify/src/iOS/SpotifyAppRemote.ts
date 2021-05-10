@@ -223,4 +223,15 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 			});
 		});
 	}
+
+	public static async skipPrevious(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			SpotifyAppRemote.appRemote.playerAPI.skipToPrevious((_result: boolean, error: any) => {
+				if (error) {
+					reject(error);
+				}
+				resolve();
+			});
+		});
+	}
 }
