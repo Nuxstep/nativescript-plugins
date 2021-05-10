@@ -15,14 +15,14 @@ declare class SPTAppRemoteConnectionParams {
 declare interface SPTAppRemoteDelegate {
 	public appRemoteDidEstablishConnection(appRemote: SPTAppRemove): void;
 	public appRemotedidFailConnectionAttemptWithError(appRemote: SPTAppRemote, error: NSError): void;
-	public appRemotedidDisconnectWithError(appRemote: STPAppRemove, error: NSError): void;
+	public appRemotedidDisconnectWithError(appRemote: SPTAppRemote, error: NSError): void;
 }
 
 declare enum SPTAppRemoteLogLevel {
 	SPTAppRemoteLogLevelNone = 0,
 	SPTAppRemoteLogLevelDebug = 1,
 	SPTAppRemoteLogLevelInfo = 2,
-	SPTAppRemoveLogLevelError = 3,
+	SPTAppRemoteLogLevelError = 3,
 }
 
 declare class SPTConfiguration {
