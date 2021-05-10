@@ -130,6 +130,29 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
+	public static async disconnect(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			SpotifyAppRemote.connectionError = null;
+
+			SpotifyAppRemote.appRemote.disconnect();
+
+			let timeElapsed = 0;
+
+			const intervalId = setInterval(() => {
+				if (timeElapsed >= INTERVAL_LIMIT) {
+					reject(new Error('[iOS] SpotifyAppRemote: Disconnect timeout'));
+				}
+
+				if (SpotifyAppRemote.connected || SpotifyAppRemote.connectionError) {
+					clearInterval(intervalId);
+					resolve();
+				}
+
+				timeElapsed += INTERVAL_DELAY;
+			}, INTERVAL_DELAY);
+		});
+	}
+
 	public static isConnected(): boolean {
 		return SpotifyAppRemote.appRemote.connected;
 	}

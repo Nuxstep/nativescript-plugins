@@ -8,6 +8,7 @@ declare class SPTAppRemote {
 	public authorizeAndPlayURI(URI: string): boolean;
 	public authorizationParametersFromURL(url: NSURL): NSDictionary<string, string>;
 	public connect(): void;
+	public disconnect(): void;
 }
 
 declare interface SPTAppRemoteCallback {
