@@ -34,6 +34,7 @@ declare enum SPTAppRemoteLogLevel {
 
 declare interface SPTAppRemotePlayerAPI {
 	public playCallback(entityIdentifier: string, callback: SPTAppRemoteCallback): void;
+	public pause(callback: SPTAppRemoteCallback): void;
 }
 
 declare class SPTConfiguration {
