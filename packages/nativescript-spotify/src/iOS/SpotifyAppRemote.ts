@@ -2,6 +2,7 @@ import { setInterval, clearInterval } from '@nativescript/core/timer';
 import { INTERVAL_DELAY, INTERVAL_LIMIT } from './Constants';
 import { SpotifyAppRemoteDelegate } from './SpotifyAppRemoteDelegate';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
+import { RepeatMode } from '../common/RepeatMode';
 
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	// Configuration
@@ -182,6 +183,17 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	public static async resume(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			SpotifyAppRemote.appRemote.playerAPI.resume((_result: boolean, error: any) => {
+				if (error) {
+					reject(error);
+				}
+				resolve();
+			});
+		});
+	}
+
+	public static async setRepeat(repeatMode: RepeatMode): Promise<void> {
+		return new Promise((resolve, reject) => {
+			SpotifyAppRemote.appRemote.playerAPI.setRepeatModeCallback(repeatMode, (_result: boolean, error: any) => {
 				if (error) {
 					reject(error);
 				}

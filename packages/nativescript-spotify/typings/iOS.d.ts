@@ -36,6 +36,7 @@ declare interface SPTAppRemotePlayerAPI {
 	public playCallback(entityIdentifier: string, callback: SPTAppRemoteCallback): void;
 	public pause(callback: SPTAppRemoteCallback): void;
 	public resume(callback: SPTAppRemoteCallback): void;
+	public setRepeatModeCallback(repeatMode: number, callback: SPTAppRemoteCallback): void;
 }
 
 declare class SPTConfiguration {
