@@ -1,19 +1,25 @@
 import { SpotifyAppRemote } from './SpotifyAppRemote';
 
-export class SpotifyAppRemoteDelegate implements SPTAppRemoteDelegate {
-	// public static ObjCProtocols = [SPTAppRemoteDelegate];
+// @ts-ignore
+export const SpotifyAppRemoteDelegate = NSObject.extend(
+	{
+		appRemoteDidEstablishConnection(_appRemote: SPTAppRemote): void {
+			SpotifyAppRemote.setConnected(true);
+			console.log('[iOS] SpotifyAppRemote: App remote did establish connection');
+		},
 
-	appRemoteDidEstablishConnection(appRemote: SPTAppRemote): void {
-		console.log('[iOS] SpotifyAppRemote: App remote did establish connection');
-	}
+		appRemoteDidFailConnectionAttemptWithError(_appRemote: SPTAppRemote, error: NSError): void {
+			SpotifyAppRemote.setConnectionError(error);
+			console.log('[iOS] SpotifyAppRemote: App remote did fail connection attempt with error');
+		},
 
-	appRemotedidFailConnectionAttemptWithError(appRemote: SPTAppRemote, error: NSError): void {
-		console.log('[iOS] SpotifyAppRemote: App remote did fail connection attempt with error');
-		throw error;
+		appRemoteDidDisconnectWithError(_appRemote: SPTAppRemote, error: NSError): void {
+			SpotifyAppRemote.setConnectionError(error);
+			console.log('[IOS] SpotifyAppRemote: App remote did disconnect with error');
+		},
+	},
+	{
+		// @ts-ignore
+		protocols: [SPTAppRemoteDelegate],
 	}
-
-	appRemotedidDisconnectWithError(appRemote: SPTAppRemote, error: NSError): void {
-		console.log('[iOS] SpotifyAppRemote: App remote did disconnect with error');
-		throw error;
-	}
-}
+);
