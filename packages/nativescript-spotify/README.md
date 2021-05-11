@@ -165,7 +165,13 @@ await SpotifyAppRemote.connect();
 
 You can pass any **Spotify URI** to `authorizeAndPlayURI()`. If you pass an empty string or no parameter at all, it'll try to play the user's last played song.
 
-For the available methods, refer to the demo (`apps/demo` and `tools/demo/nativescript-spotify`). Those will be documented at a later time.
+To understand how to use the plugin, refer to:
+
+- [apps/demo/src](https://github.com/Nuxstep/nativescript-plugins/tree/master/apps/demo/src)
+- [tools/demo/nativescript-spotify](https://github.com/Nuxstep/nativescript-plugins/tree/master/tools/demo/nativescript-spotify)
+- [packages/nativescript-spotify/index.d.ts](https://github.com/Nuxstep/nativescript-plugins/blob/master/packages/nativescript-spotify/index.d.ts)
+
+This README will be updated with the available methods at a later time.
 
 ## License
 
