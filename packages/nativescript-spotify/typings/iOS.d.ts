@@ -12,7 +12,7 @@ declare class SPTAppRemote {
 }
 
 declare interface SPTAppRemoteCallback {
-	(result: boolean, error: any): void;
+	(result: any, error: any): void;
 }
 
 declare class SPTAppRemoteConnectionParams {
@@ -40,6 +40,7 @@ declare interface SPTAppRemotePlayerAPI {
 	public resume(callback: SPTAppRemoteCallback): void;
 	public setShuffleCallback(shuffle: boolean, callback: SPTAppRemoteCallback): void;
 	public setRepeatModeCallback(repeatMode: number, callback: SPTAppRemoteCallback): void;
+	public getPlayerState(callback: SPTAppRemoteCallback): void;
 }
 
 declare class SPTConfiguration {

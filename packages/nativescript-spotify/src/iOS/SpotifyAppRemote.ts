@@ -1,8 +1,10 @@
 import { setInterval, clearInterval } from '@nativescript/core/timer';
 import { INTERVAL_DELAY, INTERVAL_LIMIT } from './Constants';
+import { iOSUtils } from './iOSUtils';
 import { SpotifyAppRemoteDelegate } from './SpotifyAppRemoteDelegate';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
 import { RepeatMode } from '../common/RepeatMode';
+import { PlayerState } from '../common/PlayerState';
 
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	// Configuration
@@ -156,6 +158,17 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static isConnected(): boolean {
 		return SpotifyAppRemote.appRemote.connected;
+	}
+
+	public static async getPlayerState(): Promise<PlayerState> {
+		return new Promise((resolve, reject) => {
+			SpotifyAppRemote.appRemote.playerAPI.getPlayerState((result: NSObject, error: any) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(iOSUtils.buildPlayerState(result));
+			});
+		});
 	}
 
 	public static async pause(): Promise<void> {
