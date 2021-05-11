@@ -26,6 +26,7 @@
               itemTap="{{ onItemTap }}"
               rowHeight="60"
               height="{{ listHeight }}"
+              class="list"
             >
               <ListView.itemTemplate>
                 <StackLayout orientation="horizontal" class="item">

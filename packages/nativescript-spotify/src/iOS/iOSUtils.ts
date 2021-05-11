@@ -1,6 +1,6 @@
 import { Album } from '../common/Album';
 import { Artist } from '../common/Artist';
-import { ImageUri } from '../common/ImageUri';
+import { ContentItem } from '../common/ContentItem';
 import { PlayerOptions } from '../common/PlayerOptions';
 import { PlayerRestrictions } from '../common/PlayerRestrictions';
 import { PlayerState } from '../common/PlayerState';
@@ -24,8 +24,8 @@ export class iOSUtils {
 				track?.valueForKey('duration'),
 				track?.valueForKey('name'),
 				track?.valueForKey('URI'),
-				// TODO: Check how to access SPTAPpRemoteImageRepresentable on iOS
-				new ImageUri(null),
+				// TODO: Check how to access SPTAppRemoteImageRepresentable on iOS
+				null,
 				track?.valueForKey('episode'),
 				track?.valueForKey('podcast')
 			),
@@ -35,5 +35,21 @@ export class iOSUtils {
 			new PlayerOptions(playbackOptions?.valueForKey('isShuffling'), playbackOptions?.valueForKey('repeatMode')),
 			new PlayerRestrictions(playbackRestrictions?.valueForKey('canSkipNext'), playbackRestrictions?.valueForKey('canSkipPrevious'), playbackRestrictions?.valueForKey('canRepeatTrack'), playbackRestrictions?.valueForKey('canRepeatContext'), playbackRestrictions?.valueForKey('canToggleShuffle'), playbackRestrictions?.valueForKey('canSeek'))
 		);
+	}
+
+	public static buildContentItems(data: NSArray<SPTAppRemoteContentItem>): Array<ContentItem> {
+		const items: Array<ContentItem> = [];
+
+		for (let i = 0; i < data.count; i++) {
+			let children = [];
+
+			if (data[i].valueForKey('children')) {
+				children = iOSUtils.buildContentItems(data[i].valueForKey('children'));
+			}
+
+			items.push(new ContentItem(data[i].valueForKey('identifier'), data[i].valueForKey('URI'), data[i].valueForKey('imageIdentifier'), data[i].valueForKey('title'), data[i].valueForKey('subtitle'), data[i].valueForKey('playable'), children));
+		}
+
+		return items;
 	}
 }

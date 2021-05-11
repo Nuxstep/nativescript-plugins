@@ -213,16 +213,14 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
-			// Get recommended content
+			// Get recommended content items
 			const contentItems = await SpotifyAppRemote.getRecommendedContentItems(ContentType.DEFAULT);
 
-			// Get children list
-			const childrenList = await SpotifyAppRemote.getChildrenOfItem(contentItems.items[0], 6, 0);
-
-			// Map children
-			const children = childrenList.items.map((child) => ({
+			// Get first recommended content item (which usually is Recently Played)
+			// and map its children
+			const children = contentItems[0].children.map((child) => ({
 				title: child.title,
-				image: child.imageUri.raw,
+				image: child.imageUri,
 				uri: child.uri,
 			}));
 

@@ -3,8 +3,10 @@ import { INTERVAL_DELAY, INTERVAL_LIMIT } from './Constants';
 import { iOSUtils } from './iOSUtils';
 import { SpotifyAppRemoteDelegate } from './SpotifyAppRemoteDelegate';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
-import { RepeatMode } from '../common/RepeatMode';
+import { ContentItem } from '../common/ContentItem';
+import { ContentType } from '../common/ContentType';
 import { PlayerState } from '../common/PlayerState';
+import { RepeatMode } from '../common/RepeatMode';
 
 export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	// Configuration
@@ -244,6 +246,19 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 					reject(error);
 				}
 				resolve();
+			});
+		});
+	}
+
+	public static async getRecommendedContentItems(type: ContentType): Promise<Array<ContentItem>> {
+		return new Promise((resolve, reject) => {
+			SpotifyAppRemote.appRemote.contentAPI.fetchRecommendedContentItemsForTypeFlattenContainersCallback(type, false, (result: NSArray<SPTAppRemoteContentItem>, error: any) => {
+				if (error) {
+					reject(error);
+				}
+
+				const contentItems = iOSUtils.buildContentItems(result);
+				resolve(contentItems);
 			});
 		});
 	}

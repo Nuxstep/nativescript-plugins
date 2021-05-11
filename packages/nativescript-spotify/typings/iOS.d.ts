@@ -1,8 +1,9 @@
-declare class SPTAppRemote {
+declare class SPTAppRemote extends NSObject {
 	public connectionParameters: SPTAppRemoteConnectionParams;
 	public connected: boolean;
 	public delegate: any;
 	public playerAPI: SPTAppRemotePlayerAPI;
+	public contentAPI: SPTAppRemoteContentAPI;
 
 	constructor(configuration: SPTConfiguration, logLevel: any);
 	public authorizeAndPlayURI(URI: string): boolean;
@@ -11,15 +12,7 @@ declare class SPTAppRemote {
 	public disconnect(): void;
 }
 
-declare interface SPTAppRemoteCallback {
-	(result: any, error: any): void;
-}
-
-declare class SPTAppRemoteConnectionParams {
-	public accessToken: string;
-}
-
-declare interface SPTAppRemoteDelegate {
+declare interface SPTAppRemoteDelegate extends NSObject {
 	public appRemoteDidEstablishConnection(appRemote: SPTAppRemote): void;
 	public appRemotedidFailConnectionAttemptWithError(appRemote: SPTAppRemote, error: NSError): void;
 	public appRemotedidDisconnectWithError(appRemote: SPTAppRemote, error: NSError): void;
@@ -32,7 +25,35 @@ declare enum SPTAppRemoteLogLevel {
 	SPTAppRemoteLogLevelError = 3,
 }
 
-declare interface SPTAppRemotePlayerAPI {
+declare class SPTAppRemoteConnectionParams extends NSObject {
+	public accessToken: string;
+}
+
+declare class SPTConfiguration extends NSObject {
+	constructor(clientID: string, redirectURL: NSURL);
+}
+
+declare interface SPTAppRemoteCallback {
+	(result: any, error: any): void;
+}
+
+declare interface SPTAppRemoteContentAPI extends NSObject {
+	public fetchRecommendedContentItemsForTypeFlattenContainersCallback(contentType: string, flattenContainers: boolean, callback: SPTAppRemoteCallback);
+	public fetchChildrenOfContentItemCallback(contentItem: SPTAppRemoteContentItem, callback: SPTAppRemoteCallback);
+}
+
+declare interface SPTAppRemoteContentItem extends NSObject {
+	public title: string;
+	public subtitle: string;
+	public identifier: string;
+	public URI: string;
+	public availableOffline: boolean;
+	public playable: boolean;
+	public container: boolean;
+	public children: NSArray<SPTAppRemoteContentItem>;
+}
+
+declare interface SPTAppRemotePlayerAPI extends NSObject {
 	public playCallback(entityIdentifier: string, callback: SPTAppRemoteCallback): void;
 	public pause(callback: SPTAppRemoteCallback): void;
 	public skipToNext(callback: SPTAppRemoteCallback): void;
@@ -41,8 +62,4 @@ declare interface SPTAppRemotePlayerAPI {
 	public setShuffleCallback(shuffle: boolean, callback: SPTAppRemoteCallback): void;
 	public setRepeatModeCallback(repeatMode: number, callback: SPTAppRemoteCallback): void;
 	public getPlayerState(callback: SPTAppRemoteCallback): void;
-}
-
-declare class SPTConfiguration {
-	constructor(clientID: string, redirectURL: NSURL);
 }
