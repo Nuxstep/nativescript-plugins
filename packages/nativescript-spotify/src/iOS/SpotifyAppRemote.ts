@@ -168,7 +168,9 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				if (error) {
 					reject(error);
 				}
-				resolve(iOSUtils.buildPlayerState(result));
+
+				const playerState = iOSUtils.buildPlayerState(result);
+				resolve(playerState);
 			});
 		});
 	}

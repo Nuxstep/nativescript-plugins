@@ -63,3 +63,7 @@ declare interface SPTAppRemotePlayerAPI extends NSObject {
 	public setRepeatModeCallback(repeatMode: number, callback: SPTAppRemoteCallback): void;
 	public getPlayerState(callback: SPTAppRemoteCallback): void;
 }
+
+declare interface SPTAppRemoteImageRepresentable extends NSObject {
+	public imageIdentifier: string;
+}

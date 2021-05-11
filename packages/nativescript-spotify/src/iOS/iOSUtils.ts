@@ -10,6 +10,11 @@ export class iOSUtils {
 	public static buildPlayerState(data: NSObject): PlayerState {
 		// Extract objects
 		const track: NSObject = data.valueForKey('track');
+		// @ts-ignore
+		// For some reason we need to call this, otherwise the
+		// imageIdentifier property from SPTAppRemoteImageRepresentable
+		// will have a null value
+		track.conformsToProtocol(SPTAppRemoteImageRepresentable);
 		const artist: NSObject = track.valueForKey('artist');
 		const album: NSObject = track.valueForKey('album');
 		const playbackOptions: NSObject = data.valueForKey('playbackOptions');
@@ -24,8 +29,7 @@ export class iOSUtils {
 				track?.valueForKey('duration'),
 				track?.valueForKey('name'),
 				track?.valueForKey('URI'),
-				// TODO: Check how to access SPTAppRemoteImageRepresentable on iOS
-				null,
+				track?.valueForKey('imageIdentifier'),
 				track?.valueForKey('episode'),
 				track?.valueForKey('podcast')
 			),
@@ -47,6 +51,11 @@ export class iOSUtils {
 				children = iOSUtils.buildContentItems(data[i].valueForKey('children'));
 			}
 
+			// @ts-ignore
+			// For some reason we need to call this, otherwise the
+			// imageIdentifier property from SPTAppRemoteImageRepresentable
+			// will have a null value
+			data[i].conformsToProtocol(SPTAppRemoteImageRepresentable);
 			items.push(new ContentItem(data[i].valueForKey('identifier'), data[i].valueForKey('URI'), data[i].valueForKey('imageIdentifier'), data[i].valueForKey('title'), data[i].valueForKey('subtitle'), data[i].valueForKey('playable'), children));
 		}
 
