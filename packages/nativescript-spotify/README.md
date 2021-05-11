@@ -12,7 +12,7 @@ Later (maybe), we can implement the Spotify Authentication SDK and Web API for m
 
 ## Setup
 
-**Not** available on npm yet, but soon you'll be able to add to your project with:
+Add the plugin to your NativeScript project with:
 
 ```bash
 ns plugin add @nuxstep/nativescript-spotify
