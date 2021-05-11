@@ -1,7 +1,7 @@
 {
 	"name": "@nuxstep/nativescript-spotify",
-	"version": "1.0.0",
-	"description": "Add a plugin description",
+	"version": "0.1.0",
+	"description": "Spotify SDK integration for NativeScript (iOS and Android)",
 	"main": "index",
 	"typings": "index.d.ts",
 	"nativescript": {
@@ -12,24 +12,25 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/NativeScript/plugins.git"
+		"url": "https://github.com/Nuxstep/nativescript-plugins.git"
 	},
 	"keywords": [
 		"NativeScript",
 		"JavaScript",
 		"TypeScript",
 		"iOS",
-		"Android"
+		"Android",
+		"Spotify"
 	],
 	"author": {
-		"name": "NativeScript",
-		"email": "oss@nativescript.org"
+		"name": "Nuxstep",
+		"email": "desenvolvimento@nuxstep.com"
 	},
 	"bugs": {
-		"url": "https://github.com/NativeScript/plugins/issues"
+		"url": "https://github.com/Nuxstep/nativescript-plugins/issues"
 	},
 	"license": "Apache-2.0",
-	"homepage": "https://github.com/NativeScript/plugins",
+	"homepage": "https://github.com/Nuxstep/nativescript-plugins",
 	"readmeFilename": "README.md",
 	"bootstrapper": "@nativescript/plugin-seed"
 }
