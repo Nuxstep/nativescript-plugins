@@ -88,9 +88,10 @@ This allows the Spotify SDK to open the Spotify app through its URL scheme. Afte
 
 Change `com.nuxstep.nativescript.plugindemo` to your **app bundle name**. Also, change `plugindemo` to your app **URL scheme**. Use the same **URL scheme** from Android for the sake of simplicity.
 
-In your **app entry point** (usually `app.ts`), import `SpotifyAppRemote` at the top of the file:
+In your **app entry point** (usually `app.ts`), import `isIOS` and `SpotifyAppRemote` at the top of the file:
 
 ```ts
+import { isIOS } from '@nativescript/core';
 import { SpotifyAppRemote } from '@nuxstep/nativescript-spotify';
 ```
 
@@ -101,16 +102,18 @@ Then, implement a custom **app delegate** before your app starts, usually before
  * Implement a custom AppDelegate on iOS so we can get the access token
  * returned from Spotify and store it on SpotifyAppRemote class
  */
-@NativeClass()
-class AppDelegate extends UIResponder implements UIApplicationDelegate {
-	public static ObjCProtocols = [UIApplicationDelegate];
+if (isIOS) {
+	@NativeClass()
+	class AppDelegate extends UIResponder implements UIApplicationDelegate {
+		public static ObjCProtocols = [UIApplicationDelegate];
 
-	applicationOpenURLOptions(_application: UIApplication, url: NSURL, _options: any): boolean {
-		SpotifyAppRemote.setAuthorizationParameters(url);
-		return true;
+		applicationOpenURLOptions(_application: UIApplication, url: NSURL, _options: any): boolean {
+			SpotifyAppRemote.setAuthorizationParameters(url);
+			return true;
+		}
 	}
+	Application.ios.delegate = AppDelegate;
 }
-Application.ios.delegate = AppDelegate;
 ```
 
 If you are **not** using TypeScript, refer to https://v7.docs.nativescript.org/core-concepts/application-lifecycle#ios-uiapplicationdelegate on how to implement the app delegate with JavaScript.
