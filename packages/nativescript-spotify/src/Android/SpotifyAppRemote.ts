@@ -2,8 +2,7 @@ import * as application from '@nativescript/core/application';
 import { AndroidUtils } from './AndroidUtils';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
 import { ContentType } from '../common/ContentType';
-import { ListItem } from '../common/ListItem';
-import { ListItems } from '../common/ListItems';
+import { ContentItem } from '../common/ContentItem';
 import { PlayerState } from '../common/PlayerState';
 import { RepeatMode } from '../common/RepeatMode';
 
@@ -205,7 +204,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	private static async getNativeRecommendedContentItems(type: ContentType): Promise<any> {
+	private static async getNativeRecommendedContentItems(type: ContentType): Promise<com.spotify.protocol.types.ListItems> {
 		return new Promise((resolve, reject) => {
 			try {
 				const callResult = SpotifyAppRemote.appRemoteInstance.getContentApi().getRecommendedContentItems(type);
@@ -223,17 +222,16 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public static async getRecommendedContentItems(type: ContentType): Promise<ListItems> {
-		const data = await SpotifyAppRemote.getNativeRecommendedContentItems(type);
-		return AndroidUtils.buildListItems(data);
+	public static async getRecommendedContentItems(type: ContentType): Promise<Array<ContentItem>> {
+		const nativeContentItems = await SpotifyAppRemote.getNativeRecommendedContentItems(type);
+		const contentItems = await AndroidUtils.buildContentItems(nativeContentItems.items);
+		return contentItems;
 	}
 
-	private static async getNativeChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<any> {
+	public static async getNativeChildrenOfItem(item: com.spotify.protocol.types.ListItem, perpage: number, offset: number): Promise<com.spotify.protocol.types.ListItems> {
 		return new Promise((resolve, reject) => {
 			try {
-				const nativeListItem = new com.spotify.protocol.types.ListItem(item.id, item.uri, new com.spotify.protocol.types.ImageUri(item.imageUri.raw), item.title, item.subtitle, item.playable, item.hasChildren);
-
-				const callResult = SpotifyAppRemote.appRemoteInstance.getContentApi().getChildrenOfItem(nativeListItem, perpage, offset);
+				const callResult = SpotifyAppRemote.appRemoteInstance.getContentApi().getChildrenOfItem(item, perpage, offset);
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
@@ -246,10 +244,5 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				reject(exception);
 			}
 		});
-	}
-
-	public static async getChildrenOfItem(item: ListItem, perpage: number, offset: number): Promise<ListItems> {
-		const data = await SpotifyAppRemote.getNativeChildrenOfItem(item, perpage, offset);
-		return AndroidUtils.buildListItems(data);
 	}
 }

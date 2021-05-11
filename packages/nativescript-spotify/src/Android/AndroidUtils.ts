@@ -1,8 +1,7 @@
+import { SpotifyAppRemote } from './SpotifyAppRemote';
 import { Album } from '../common/Album';
 import { Artist } from '../common/Artist';
-import { ImageUri } from '../common/ImageUri';
-import { ListItem } from '../common/ListItem';
-import { ListItems } from '../common/ListItems';
+import { ContentItem } from '../common/ContentItem';
 import { PlayerOptions } from '../common/PlayerOptions';
 import { PlayerRestrictions } from '../common/PlayerRestrictions';
 import { PlayerState } from '../common/PlayerState';
@@ -15,7 +14,7 @@ export class AndroidUtils {
 		const artists: Array<Artist> = [];
 
 		for (let i = 0; i < data.size(); i++) {
-			artists.push(new Artist(data.get(i).name, data.get(i).uri));
+			artists.push(new Artist(data[i].name, data[i].uri));
 		}
 
 		return artists;
@@ -23,7 +22,7 @@ export class AndroidUtils {
 
 	public static buildPlayerState(data: any): PlayerState {
 		return new PlayerState(
-			new Track(new Artist(data.track?.artist?.name, data.track?.artist?.uri), this.buildArtists(data.track?.artists), new Album(data.track?.album?.name, data?.track?.album.uri), data.track.duration, data.track.name, data.track.uri, new ImageUri(data.track?.imageUri?.raw), data.track.isEpisode, data.track.isPodcast),
+			new Track(new Artist(data.track?.artist?.name, data.track?.artist?.uri), this.buildArtists(data.track?.artists), new Album(data.track?.album?.name, data?.track?.album.uri), data.track.duration, data.track.name, data.track.uri, data.track?.imageUri?.raw, data.track.isEpisode, data.track.isPodcast),
 			data.isPaused,
 			data.playbackSpeed,
 			data.playbackPosition,
@@ -32,19 +31,20 @@ export class AndroidUtils {
 		);
 	}
 
-	public static buildListItem(data: any): Array<ListItem> {
-		const items: Array<ListItem> = [];
+	public static async buildContentItems(data: com.spotify.protocol.types.ListItem[]): Promise<Array<ContentItem>> {
+		const items: Array<ContentItem> = [];
 
 		for (let i = 0; i < data.length; i++) {
-			items.push(new ListItem(data[i].id, data[i].uri, new ImageUri(data[i].imageUri.raw), data[i].title, data[i].subtitle, data[i].playable, data[i].hasChildren));
+			let children: Array<ContentItem> = [];
+
+			if (data[i].hasChildren) {
+				const nativeChildren = await SpotifyAppRemote.getNativeChildrenOfItem(data[i], 10, 0);
+				children = await AndroidUtils.buildContentItems(nativeChildren.items);
+			}
+
+			items.push(new ContentItem(data[i].id, data[i].uri, data[i].imageUri.raw, data[i].title, data[i].subtitle, data[i].playable, children));
 		}
 
 		return items;
-	}
-
-	public static buildListItems(data: any): ListItems {
-		const items = this.buildListItem(data.items);
-
-		return new ListItems(data.limit, data.offset, data.total, items);
 	}
 }

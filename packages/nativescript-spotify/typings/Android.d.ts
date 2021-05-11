@@ -89,6 +89,14 @@ declare module com {
 					public hasChildren: boolean;
 					constructor(id: string, uri: string, imageUri: com.spotify.protocol.types.ImageUri, title: string, subtitle: string, playable: boolean, hasChildren: boolean);
 				}
+
+				// com.spotify.protocol.types.ListItems
+				export class ListItems {
+					public limit: number;
+					public offset: number;
+					public total: number;
+					public items: com.spotify.protocol.types.ListItem[];
+				}
 			}
 		}
 	}
