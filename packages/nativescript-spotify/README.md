@@ -57,6 +57,14 @@ Here you will set the **Redirect URI** for the Spotify App Remote authentication
   android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 ```
 
+For **Android 11** or higher, you also need to specify which other applications your application can **query** (read about it [here](https://developer.android.com/training/package-visibility)). To do that, simply add the following snippet one level below the `<manifest>` tag:
+
+```xml
+<queries>
+  <package android:name="com.spotify.music" />
+</queries>
+```
+
 You'll need an **App Fingerprint** too. Refer to https://developer.spotify.com/documentation/android/quick-start/#register-app-fingerprints on how to create one. **Write it down** because you will need it later.
 
 ### iOS
