@@ -1,3 +1,17 @@
+.track-info {
+	margin-left: 25;
+}
+
+.track-image {
+	height: 100;
+	width: 100;
+	margin-left: 20;
+}
+
+.track-name {
+	font-size: 18;
+}
+
 .list {
 	background-color: #ffffff;
 	color: #000000;

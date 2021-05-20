@@ -34,6 +34,12 @@ declare module com {
 						public playContentItem(item: com.spotify.protocol.types.ListItem): com.spotify.protocol.client.CallResult;
 					}
 
+					// com.spotify.android.appremote.api.ImagesApi
+					export interface ImagesApi {
+						public getImage(imageUri: com.spotify.protocol.types.ImageUri): com.spotify.protocol.client.CallResult;
+						public getImage(imageUri: com.spotify.protocol.types.ImageUri, dimension: com.spotify.protocol.types.Image.Dimension): com.spotify.protocol.client.CallResult;
+					}
+
 					// com.spotify.android.appremote.api.PlayerApi
 					export interface PlayerApi {
 						public getPlayerState(): com.spotify.protocol.client.CallResult;
@@ -52,6 +58,7 @@ declare module com {
 						public static disconnect(spotifyAppRemote: com.spotify.android.appremote.api.SpotifyAppRemote): void;
 						public getContentApi(): com.spotify.android.appremote.api.ContentApi;
 						public getPlayerApi(): com.spotify.android.appremote.api.PlayerApi;
+						public getImagesApi(): com.spotify.android.appremote.api.ImagesApi;
 						public isConnected(): boolean;
 					}
 				}
@@ -72,6 +79,17 @@ declare module com {
 				}
 			}
 			export module types {
+				export namespace Image {
+					// com.spotify.protocol.types.Image.Dimension
+					export enum Dimension {
+						LARGE,
+						MEDIUM,
+						SMALL,
+						THUMBNAIL,
+						X_SMALL,
+					}
+				}
+
 				// com.spotify.protocol.types.ImageUri
 				export class ImageUri {
 					public raw: string;

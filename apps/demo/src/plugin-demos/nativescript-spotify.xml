@@ -9,6 +9,13 @@
             <Label text="Some actions will output to the terminal" textAlignment="center"/>
             <Button text="Connect" tap="{{ connect }}" isEnabled="{{ !connected && !loading }}" class="btn btn-primary"/>
             <Button text="Disconnect" tap="{{ disconnect }}" isEnabled="{{ connected && !loading }}" class="btn btn-primary"/>
+            <GridLayout columns="auto, *">
+              <Image col="0" src="{{ playerState.track.image }}" class="track-image"/>
+              <StackLayout col="1" class="track-info">
+                <Label text="{{ playerState.track.name }}" textWrap="true" class="track-name"/>
+                <Label text="{{ playerState.track.artist.name }}" textWrap="true" class="artist-name"/>
+              </StackLayout>
+            </GridLayout>
             <Button text="Get Player State" isEnabled="{{ connected && !loading }}" tap="{{ getPlayerState }}" class="btn btn-primary"/>
             <Button text="Play" isEnabled="{{ connected && !loading }}" tap="{{ play }}" class="btn btn-primary"/>
             <Button text="Pause" isEnabled="{{ connected && !loading }}" tap="{{ pause }}" class="btn btn-primary"/>

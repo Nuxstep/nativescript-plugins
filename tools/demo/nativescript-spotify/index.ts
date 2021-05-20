@@ -6,6 +6,15 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 	// UI
 	public loading: boolean = false;
 	public connected: boolean = false;
+	public playerState = {
+		track: {
+			name: '',
+			image: null,
+			artist: {
+				name: '',
+			},
+		},
+	};
 	public items = [];
 	public listHeight = 0;
 
@@ -58,7 +67,9 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 
 			this.set('loading', true);
 
+			// PlayerState
 			const state = await SpotifyAppRemote.getPlayerState();
+			this.set('playerState', state);
 			console.log(state);
 
 			this.set('loading', false);

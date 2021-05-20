@@ -1,5 +1,6 @@
 import * as application from '@nativescript/core/application';
 import { AndroidUtils } from './AndroidUtils';
+import { PlayerStateBuilder } from './PlayerStateBuilder';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
 import { ContentType } from '../common/ContentType';
 import { ContentItem } from '../common/ContentItem';
@@ -55,7 +56,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return SpotifyAppRemote.appRemoteInstance.isConnected();
 	}
 
-	private static async getNativePlayerState(): Promise<object> {
+	private static async getNativePlayerState(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			try {
 				const callResult = SpotifyAppRemote.appRemoteInstance.getPlayerApi().getPlayerState();
@@ -75,7 +76,11 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async getPlayerState(): Promise<PlayerState> {
 		const data = await SpotifyAppRemote.getNativePlayerState();
-		return AndroidUtils.buildPlayerState(data);
+
+		const nativeImage = await this.getNativeImage(data?.track?.imageUri?.raw);
+		const image = this.convertNativeImageToImageSource(nativeImage);
+
+		return PlayerStateBuilder.build(data, image);
 	}
 
 	public static async pause(): Promise<void> {
@@ -232,6 +237,24 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return new Promise((resolve, reject) => {
 			try {
 				const callResult = SpotifyAppRemote.appRemoteInstance.getContentApi().getChildrenOfItem(item, perpage, offset);
+
+				callResult.setResultCallback(
+					new com.spotify.protocol.client.CallResult.ResultCallback({
+						onResult(data) {
+							resolve(data);
+						},
+					})
+				);
+			} catch (exception) {
+				reject(exception);
+			}
+		});
+	}
+
+	private static async getNativeImage(imageUri: string): Promise<android.graphics.Bitmap> {
+		return new Promise((resolve, reject) => {
+			try {
+				const callResult = SpotifyAppRemote.appRemoteInstance.getImagesApi().getImage(new com.spotify.protocol.types.ImageUri(imageUri));
 
 				callResult.setResultCallback(
 					new com.spotify.protocol.client.CallResult.ResultCallback({
