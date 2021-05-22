@@ -3,6 +3,7 @@ declare class SPTAppRemote extends NSObject {
 	public connected: boolean;
 	public delegate: any;
 	public playerAPI: SPTAppRemotePlayerAPI;
+	public imageAPI: SPTAppRemoteImageAPI;
 	public contentAPI: SPTAppRemoteContentAPI;
 
 	constructor(configuration: SPTConfiguration, logLevel: any);
@@ -51,6 +52,10 @@ declare interface SPTAppRemoteContentItem extends NSObject {
 	public playable: boolean;
 	public container: boolean;
 	public children: NSArray<SPTAppRemoteContentItem>;
+}
+
+declare interface SPTAppRemoteImageAPI extends NSObject {
+	public fetchImageForItemWithSizeCallback(imageRepresentable: SPTAppRemoteImageRepresentable, imageSize: CGSize, callback: SPTAppRemoteCallback): void;
 }
 
 declare interface SPTAppRemotePlayerAPI extends NSObject {

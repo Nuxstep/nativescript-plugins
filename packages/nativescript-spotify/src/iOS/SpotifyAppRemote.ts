@@ -1,5 +1,6 @@
 import { setInterval, clearInterval } from '@nativescript/core/timer';
 import { INTERVAL_DELAY, INTERVAL_LIMIT } from './Constants';
+import { PlayerStateBuilder } from './PlayerStateBuilder';
 import { iOSUtils } from './iOSUtils';
 import { SpotifyAppRemoteDelegate } from './SpotifyAppRemoteDelegate';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
@@ -163,14 +164,22 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	}
 
 	public static async getPlayerState(): Promise<PlayerState> {
+		const nativePlayerState = await this.getNativePlayerState();
+
+		const nativeImage = await this.getNativeImage(nativePlayerState?.valueForKey('track'));
+		const image = this.convertNativeImageToImageSource(nativeImage);
+
+		return PlayerStateBuilder.build(nativePlayerState, image);
+	}
+
+	private static async getNativePlayerState(): Promise<NSObject> {
 		return new Promise((resolve, reject) => {
 			SpotifyAppRemote.appRemote.playerAPI.getPlayerState((result: NSObject, error: any) => {
 				if (error) {
 					reject(error);
 				}
 
-				const playerState = iOSUtils.buildPlayerState(result);
-				resolve(playerState);
+				resolve(result);
 			});
 		});
 	}
@@ -262,6 +271,21 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				const contentItems = iOSUtils.buildContentItems(result);
 				resolve(contentItems);
 			});
+		});
+	}
+
+	private static async getNativeImage(imageRepresentable: SPTAppRemoteImageRepresentable): Promise<UIImage> {
+		return new Promise((resolve, reject) => {
+			// @ts-ignore
+			if (imageRepresentable.conformsToProtocol(SPTAppRemoteImageRepresentable)) {
+				this.appRemote.imageAPI.fetchImageForItemWithSizeCallback(imageRepresentable, { width: 720, height: 720 }, (result: UIImage, error: any) => {
+					if (error) {
+						reject(error);
+					}
+
+					resolve(result);
+				});
+			}
 		});
 	}
 }
