@@ -76,11 +76,21 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async getPlayerState(): Promise<PlayerState> {
 		const data = await SpotifyAppRemote.getNativePlayerState();
+		return PlayerStateBuilder.build(data);
+	}
 
-		const nativeImage = await this.getNativeImage(data?.track?.imageUri?.raw);
-		const image = this.convertNativeImageToImageSource(nativeImage);
-
-		return PlayerStateBuilder.build(data, image);
+	public static subscribeToPlayerState(callback: (playerState: PlayerState) => void): void {
+		this.appRemoteInstance
+			.getPlayerApi()
+			.subscribeToPlayerState()
+			.setEventCallback(
+				new com.spotify.protocol.client.Subscription.EventCallback({
+					async onEvent(data: com.spotify.protocol.types.PlayerState) {
+						const playerState = await PlayerStateBuilder.build(data);
+						callback(playerState);
+					},
+				})
+			);
 	}
 
 	public static async pause(): Promise<void> {
@@ -251,7 +261,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	private static async getNativeImage(imageUri: string): Promise<android.graphics.Bitmap> {
+	public static async getImage(imageUri: string): Promise<android.graphics.Bitmap> {
 		return new Promise((resolve, reject) => {
 			try {
 				const callResult = SpotifyAppRemote.appRemoteInstance.getImagesApi().getImage(new com.spotify.protocol.types.ImageUri(imageUri));

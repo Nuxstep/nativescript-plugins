@@ -65,8 +65,8 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	/**
 	 * Disconnect from Spotify App Remote
 	 *
-	 * @async
 	 * @static
+	 * @async
 	 * @return {Promise<void>} Resolves when action is executed
 	 * @memberof SpotifyAppRemote
 	 */
@@ -84,12 +84,24 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	/**
 	 * Get the player state of the Spotify app
 	 *
+	 * @static
 	 * @async
 	 * @return {Promise<PlayerState>} Resolves to an instance of PlayerState
 	 * @memberof SpotifyAppRemote
 	 * @see PlayerState
 	 */
 	public static async getPlayerState(): Promise<PlayerState>;
+
+	/**
+	 * Create a subscription for player state changes
+	 *
+	 * @static
+	 * @param {(playerState: PlayerState) => void} callback Callback called
+	 * every time a new event is received on the subscription
+	 * @return {void}
+	 * @memberof SpotifyAppRemote
+	 */
+	public static subscribeToPlayerState(callback: (playerState: PlayerState) => void): void;
 
 	/**
 	 * Pause playback if it's current playing

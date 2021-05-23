@@ -1553,9 +1553,9 @@ declare module com {
 						/**
 						 * Constructs a new instance of the com.spotify.protocol.client.Subscription$EventCallback interface with the provided implementation. An empty constructor exists calling super() when extending the interface class.
 						 */
-						public constructor(implementation: { onEvent(param0: T): void });
+						public constructor(implementation: { onEvent(data: T): void });
 						public constructor();
-						public onEvent(param0: T): void;
+						public onEvent(data: T): void;
 					}
 					export class LifecycleCallback {
 						public static class: java.lang.Class<com.spotify.protocol.client.Subscription.LifecycleCallback>;

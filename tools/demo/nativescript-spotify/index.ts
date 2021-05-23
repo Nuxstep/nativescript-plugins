@@ -1,5 +1,5 @@
 import { ItemEventData, isIOS } from '@nativescript/core';
-import { SpotifyAppRemote, ContentType, RepeatMode } from '@nuxstep/nativescript-spotify';
+import { SpotifyAppRemote, ContentType, PlayerState, RepeatMode } from '@nuxstep/nativescript-spotify';
 import { DemoSharedBase } from '../utils';
 
 export class DemoSharedNativescriptSpotify extends DemoSharedBase {
@@ -71,6 +71,23 @@ export class DemoSharedNativescriptSpotify extends DemoSharedBase {
 			const state = await SpotifyAppRemote.getPlayerState();
 			this.set('playerState', state);
 			console.log(state);
+
+			this.set('loading', false);
+		} catch (ex) {
+			console.log(`Error: ${ex}`);
+		}
+	}
+
+	public async subscribeToPlayerState() {
+		try {
+			this.checkConnected();
+
+			this.set('loading', true);
+
+			SpotifyAppRemote.subscribeToPlayerState((playerState: PlayerState) => {
+				this.set('playerState', playerState);
+				console.log(playerState);
+			});
 
 			this.set('loading', false);
 		} catch (ex) {
