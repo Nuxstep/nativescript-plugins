@@ -20,8 +20,9 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		this.redirectUri = redirectUri;
 	}
 
-	private static createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
-		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
+	public static async connect(): Promise<void> {
+		this.appRemoteInstance = await this.requestAuthorization();
+		return;
 	}
 
 	private static requestAuthorization(): Promise<com.spotify.android.appremote.api.SpotifyAppRemote> {
@@ -42,9 +43,8 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	public static async connect(): Promise<void> {
-		this.appRemoteInstance = await this.requestAuthorization();
-		return;
+	private static createConnectionParams(): com.spotify.android.appremote.api.ConnectionParams {
+		return new com.spotify.android.appremote.api.ConnectionParams.Builder(this.clientId).setRedirectUri(this.redirectUri).showAuthView(true).build();
 	}
 
 	public static async disconnect(): Promise<void> {
@@ -54,6 +54,11 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static isConnected(): boolean {
 		return this.appRemoteInstance.isConnected();
+	}
+
+	public static async getPlayerState(): Promise<PlayerState> {
+		const data = await this.getNativePlayerState();
+		return PlayerStateBuilder.build(data);
 	}
 
 	private static async getNativePlayerState(): Promise<any> {
@@ -72,11 +77,6 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				reject(exception);
 			}
 		});
-	}
-
-	public static async getPlayerState(): Promise<PlayerState> {
-		const data = await this.getNativePlayerState();
-		return PlayerStateBuilder.build(data);
 	}
 
 	public static subscribeToPlayerState(callback: (playerState: PlayerState) => void): void {
@@ -219,6 +219,12 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
+	public static async getRecommendedContentItems(type: ContentType): Promise<Array<ContentItem>> {
+		const nativeContentItems = await this.getNativeRecommendedContentItems(type);
+		const contentItems = await ContentItemsBuilder.build(nativeContentItems.items);
+		return contentItems;
+	}
+
 	private static async getNativeRecommendedContentItems(type: ContentType): Promise<com.spotify.protocol.types.ListItems> {
 		return new Promise((resolve, reject) => {
 			try {
@@ -235,12 +241,6 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				reject(exception);
 			}
 		});
-	}
-
-	public static async getRecommendedContentItems(type: ContentType): Promise<Array<ContentItem>> {
-		const nativeContentItems = await this.getNativeRecommendedContentItems(type);
-		const contentItems = await ContentItemsBuilder.build(nativeContentItems.items);
-		return contentItems;
 	}
 
 	public static async getNativeChildrenOfItem(item: com.spotify.protocol.types.ListItem, perpage: number, offset: number): Promise<com.spotify.protocol.types.ListItems> {

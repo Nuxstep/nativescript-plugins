@@ -41,47 +41,6 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		this.connectionError = error;
 	}
 
-	private static clearAuthorizationState(): void {
-		this.authorized = false;
-		this.authorizationError = null;
-	}
-
-	private static clearConnectionState(): void {
-		this.connected = false;
-		this.connectionError = null;
-	}
-
-	private static createConfiguration() {
-		return new SPTConfiguration(this.clientId, NSURL.URLWithString(this.redirectUri));
-	}
-
-	private static createAppRemote() {
-		const appRemote = new SPTAppRemote(this.configuration, SPTAppRemoteLogLevel.Error);
-		appRemote.delegate = SpotifyAppRemoteDelegate.new();
-
-		return appRemote;
-	}
-
-	private static extractAccessTokenFromURL(url: NSURL): string {
-		const parameters = this.appRemote.authorizationParametersFromURL(url);
-
-		if (parameters['error'] || parameters.objectForKey('error')) {
-			throw parameters['error'] || parameters.objectForKey('error');
-		}
-
-		return parameters['access_token'] || parameters.objectForKey('access_token');
-	}
-
-	public static setAuthorizationParameters(url: NSURL): void {
-		try {
-			this.accessToken = this.extractAccessTokenFromURL(url);
-			this.appRemote.connectionParameters.accessToken = this.accessToken;
-			this.authorized = true;
-		} catch (exception) {
-			this.authorizationError = exception;
-		}
-	}
-
 	public static async authorizeAndPlayURI(uri: string = ''): Promise<void> {
 		return new Promise((resolve, reject) => {
 			this.clearAuthorizationState();
@@ -111,6 +70,22 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
+	private static clearAuthorizationState(): void {
+		this.authorized = false;
+		this.authorizationError = null;
+	}
+
+	private static createConfiguration() {
+		return new SPTConfiguration(this.clientId, NSURL.URLWithString(this.redirectUri));
+	}
+
+	private static createAppRemote() {
+		const appRemote = new SPTAppRemote(this.configuration, SPTAppRemoteLogLevel.Error);
+		appRemote.delegate = SpotifyAppRemoteDelegate.new();
+
+		return appRemote;
+	}
+
 	public static async connect(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			this.clearConnectionState();
@@ -135,6 +110,31 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 				timeElapsed += INTERVAL_DELAY;
 			}, INTERVAL_DELAY);
 		});
+	}
+
+	private static clearConnectionState(): void {
+		this.connected = false;
+		this.connectionError = null;
+	}
+
+	public static setAuthorizationParameters(url: NSURL): void {
+		try {
+			this.accessToken = this.extractAccessTokenFromURL(url);
+			this.appRemote.connectionParameters.accessToken = this.accessToken;
+			this.authorized = true;
+		} catch (exception) {
+			this.authorizationError = exception;
+		}
+	}
+
+	private static extractAccessTokenFromURL(url: NSURL): string {
+		const parameters = this.appRemote.authorizationParametersFromURL(url);
+
+		if (parameters['error'] || parameters.objectForKey('error')) {
+			throw parameters['error'] || parameters.objectForKey('error');
+		}
+
+		return parameters['access_token'] || parameters.objectForKey('access_token');
 	}
 
 	public static async disconnect(): Promise<void> {
