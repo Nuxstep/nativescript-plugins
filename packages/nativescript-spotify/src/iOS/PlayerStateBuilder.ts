@@ -8,12 +8,12 @@ import { Track } from '../common/Track';
 import { SpotifyAppRemote } from './SpotifyAppRemote';
 
 export class PlayerStateBuilder {
-	public static async build(nativePlayerState: NSObject): Promise<PlayerState> {
+	public static async build(nativePlayerState: SPTAppRemotePlayerState): Promise<PlayerState> {
 		const track = await this.buildTrack(nativePlayerState?.valueForKey('track'));
 		return new PlayerState(track, nativePlayerState?.valueForKey('paused'), nativePlayerState?.valueForKey('playbackSpeed'), nativePlayerState?.valueForKey('playbackPosition'), this.buildPlayerOptions(nativePlayerState?.valueForKey('playbackOptions')), this.buildPlayerRestrictions(nativePlayerState?.valueForKey('playbackRestrictions')));
 	}
 
-	private static async buildTrack(nativeTrack: NSObject): Promise<Track> {
+	private static async buildTrack(nativeTrack: SPTAppRemoteTrack): Promise<Track> {
 		// @ts-ignore
 		const image = await this.buildImage(nativeTrack);
 		return new Track(
@@ -30,11 +30,11 @@ export class PlayerStateBuilder {
 		);
 	}
 
-	private static buildArtist(nativeArtist: NSObject): Artist {
+	private static buildArtist(nativeArtist: SPTAppRemoteArtist): Artist {
 		return new Artist(nativeArtist?.valueForKey('name'), nativeArtist?.valueForKey('URI'));
 	}
 
-	private static buildAlbum(nativeAlbum: NSObject): Album {
+	private static buildAlbum(nativeAlbum: SPTAppRemoteAlbum): Album {
 		return new Album(nativeAlbum?.valueForKey('name'), nativeAlbum?.valueForKey('URI'));
 	}
 
@@ -43,11 +43,11 @@ export class PlayerStateBuilder {
 		return new ImageSource(image);
 	}
 
-	private static buildPlayerOptions(nativePlayerOptions: NSObject): PlayerOptions {
+	private static buildPlayerOptions(nativePlayerOptions: SPTAppRemotePlaybackOptions): PlayerOptions {
 		return new PlayerOptions(nativePlayerOptions?.valueForKey('isShuffling'), nativePlayerOptions?.valueForKey('repeatMode'));
 	}
 
-	private static buildPlayerRestrictions(nativePlayerRestrictions: NSObject): PlayerRestrictions {
+	private static buildPlayerRestrictions(nativePlayerRestrictions: SPTAppRemotePlaybackRestrictions): PlayerRestrictions {
 		return new PlayerRestrictions(nativePlayerRestrictions?.valueForKey('canSkipNext'), nativePlayerRestrictions?.valueForKey('canSkipPrevious'), nativePlayerRestrictions?.valueForKey('canRepeatTrack'), nativePlayerRestrictions?.valueForKey('canRepeatContext'), nativePlayerRestrictions?.valueForKey('canToggleShuffle'), nativePlayerRestrictions?.valueForKey('canSeek'));
 	}
 }

@@ -7,7 +7,7 @@ export const SpotifyAppRemotePlayerStateDelegate = (callback: (playerState: Play
 		{
 			callback,
 
-			async playerStateDidChange(playerState: any): Promise<void> {
+			async playerStateDidChange(playerState: SPTAppRemotePlayerState): Promise<void> {
 				console.log('[iOS] SpotifyAppRemote: Player state did change');
 				const data = await PlayerStateBuilder.build(playerState);
 				this.callback(data);

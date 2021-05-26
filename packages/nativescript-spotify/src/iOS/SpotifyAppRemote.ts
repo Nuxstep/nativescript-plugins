@@ -56,7 +56,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 	}
 
 	private static createAppRemote() {
-		const appRemote = new SPTAppRemote(this.configuration, SPTAppRemoteLogLevel.SPTAppRemoteLogLevelError);
+		const appRemote = new SPTAppRemote(this.configuration, SPTAppRemoteLogLevel.Error);
 		appRemote.delegate = SpotifyAppRemoteDelegate.new();
 
 		return appRemote;
@@ -169,9 +169,9 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return PlayerStateBuilder.build(nativePlayerState);
 	}
 
-	private static async getNativePlayerState(): Promise<NSObject> {
+	private static async getNativePlayerState(): Promise<SPTAppRemotePlayerState> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.getPlayerState((result: NSObject, error: any) => {
+			this.appRemote.playerAPI.getPlayerState((result: SPTAppRemotePlayerState, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -185,7 +185,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		const playerStateDelegate = SpotifyAppRemotePlayerStateDelegate(callback).new();
 		this.appRemote.playerAPI.delegate = playerStateDelegate;
 
-		this.appRemote.playerAPI.subscribeToPlayerState(async (_result: NSObject, error: any) => {
+		this.appRemote.playerAPI.subscribeToPlayerState(async (_result: boolean, error: NSError) => {
 			if (error) {
 				throw error;
 			}
@@ -194,7 +194,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async pause(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.pause((_result: boolean, error: any) => {
+			this.appRemote.playerAPI.pause((_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -205,7 +205,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async play(uri: string): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.playCallback(uri, (_result: boolean, error: any) => {
+			this.appRemote.playerAPI.playCallback(uri, (_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -216,7 +216,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async resume(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.resume((_result: boolean, error: any) => {
+			this.appRemote.playerAPI.resume((_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -227,7 +227,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async setRepeat(repeatMode: RepeatMode): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.setRepeatModeCallback(repeatMode, (_result: boolean, error: any) => {
+			this.appRemote.playerAPI.setRepeatModeCallback(repeatMode, (_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -238,7 +238,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async setShuffle(enabled: boolean): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.setShuffleCallback(enabled, (_result: boolean, error: any) => {
+			this.appRemote.playerAPI.setShuffleCallback(enabled, (_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -249,7 +249,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async skipNext(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.skipToNext((_result: boolean, error: any) => {
+			this.appRemote.playerAPI.skipToNext((_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -260,7 +260,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async skipPrevious(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.playerAPI.skipToPrevious((_result: boolean, error: any) => {
+			this.appRemote.playerAPI.skipToPrevious((_result: boolean, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -271,7 +271,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async getRecommendedContentItems(type: ContentType): Promise<Array<ContentItem>> {
 		return new Promise((resolve, reject) => {
-			this.appRemote.contentAPI.fetchRecommendedContentItemsForTypeFlattenContainersCallback(type, false, (result: NSArray<SPTAppRemoteContentItem>, error: any) => {
+			this.appRemote.contentAPI.fetchRecommendedContentItemsForTypeFlattenContainersCallback(type, false, (result: NSArray<SPTAppRemoteContentItem>, error: NSError) => {
 				if (error) {
 					reject(error);
 				}
@@ -286,7 +286,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		return new Promise((resolve, reject) => {
 			// @ts-ignore
 			if (imageRepresentable.conformsToProtocol(SPTAppRemoteImageRepresentable)) {
-				this.appRemote.imageAPI.fetchImageForItemWithSizeCallback(imageRepresentable, { width: 720, height: 720 }, (result: UIImage, error: any) => {
+				this.appRemote.imageAPI.fetchImageForItemWithSizeCallback(imageRepresentable, { width: 720, height: 720 }, (result: UIImage, error: NSError) => {
 					if (error) {
 						reject(error);
 					}
