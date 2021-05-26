@@ -1,14 +1,14 @@
 import { ContentItem } from '../common/ContentItem';
 
-export class iOSUtils {
-	public static buildContentItems(data: NSArray<SPTAppRemoteContentItem>): Array<ContentItem> {
+export class ContentItemsBuilder {
+	public static build(data: NSArray<SPTAppRemoteContentItem>): Array<ContentItem> {
 		const items: Array<ContentItem> = [];
 
 		for (let i = 0; i < data.count; i++) {
 			let children = [];
 
 			if (data[i].valueForKey('children')) {
-				children = iOSUtils.buildContentItems(data[i].valueForKey('children'));
+				children = this.build(data[i].valueForKey('children'));
 			}
 
 			// @ts-ignore

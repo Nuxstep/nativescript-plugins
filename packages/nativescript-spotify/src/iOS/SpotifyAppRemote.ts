@@ -1,7 +1,7 @@
 import { setInterval, clearInterval } from '@nativescript/core/timer';
 import { INTERVAL_DELAY, INTERVAL_LIMIT } from './Constants';
 import { PlayerStateBuilder } from './PlayerStateBuilder';
-import { iOSUtils } from './iOSUtils';
+import { ContentItemsBuilder } from './ContentItemsBuilder';
 import { SpotifyAppRemoteDelegate } from './SpotifyAppRemoteDelegate';
 import { SpotifyAppRemotePlayerStateDelegate } from './SpotifyAppRemotePlayerStateDelegate';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
@@ -276,7 +276,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 					reject(error);
 				}
 
-				const contentItems = iOSUtils.buildContentItems(result);
+				const contentItems = ContentItemsBuilder.build(result);
 				resolve(contentItems);
 			});
 		});

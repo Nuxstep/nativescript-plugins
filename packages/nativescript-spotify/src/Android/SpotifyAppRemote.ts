@@ -1,5 +1,5 @@
 import * as application from '@nativescript/core/application';
-import { AndroidUtils } from './AndroidUtils';
+import { ContentItemsBuilder } from './ContentItemsBuilder';
 import { PlayerStateBuilder } from './PlayerStateBuilder';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
 import { ContentType } from '../common/ContentType';
@@ -239,7 +239,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async getRecommendedContentItems(type: ContentType): Promise<Array<ContentItem>> {
 		const nativeContentItems = await SpotifyAppRemote.getNativeRecommendedContentItems(type);
-		const contentItems = await AndroidUtils.buildContentItems(nativeContentItems.items);
+		const contentItems = await ContentItemsBuilder.build(nativeContentItems.items);
 		return contentItems;
 	}
 
