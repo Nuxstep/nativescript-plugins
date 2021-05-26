@@ -2,7 +2,7 @@ import { SpotifyAppRemote } from './SpotifyAppRemote';
 import { ContentItem } from '../common/ContentItem';
 
 export class ContentItemsBuilder {
-	public static async build(data: com.spotify.protocol.types.ListItem[]): Promise<Array<ContentItem>> {
+	public static async build(data: androidNative.Array<com.spotify.protocol.types.ListItem>): Promise<Array<ContentItem>> {
 		const items: Array<ContentItem> = [];
 
 		for (let i = 0; i < data.length; i++) {
