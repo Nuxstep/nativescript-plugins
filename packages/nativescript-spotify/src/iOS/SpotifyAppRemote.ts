@@ -3,6 +3,7 @@ import { INTERVAL_DELAY, INTERVAL_LIMIT } from './Constants';
 import { PlayerStateBuilder } from './PlayerStateBuilder';
 import { iOSUtils } from './iOSUtils';
 import { SpotifyAppRemoteDelegate } from './SpotifyAppRemoteDelegate';
+import { SpotifyAppRemotePlayerStateDelegate } from './SpotifyAppRemotePlayerStateDelegate';
 import { SpotifyAppRemoteCommon } from '../common/SpotifyAppRemoteCommon';
 import { ContentItem } from '../common/ContentItem';
 import { ContentType } from '../common/ContentType';
@@ -165,11 +166,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 	public static async getPlayerState(): Promise<PlayerState> {
 		const nativePlayerState = await this.getNativePlayerState();
-
-		const nativeImage = await this.getNativeImage(nativePlayerState?.valueForKey('track'));
-		const image = this.convertNativeImageToImageSource(nativeImage);
-
-		return PlayerStateBuilder.build(nativePlayerState, image);
+		return PlayerStateBuilder.build(nativePlayerState);
 	}
 
 	private static async getNativePlayerState(): Promise<NSObject> {
@@ -181,6 +178,17 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 
 				resolve(result);
 			});
+		});
+	}
+
+	public static subscribeToPlayerState(callback: (playerState: PlayerState) => void): void {
+		const playerStateDelegate = SpotifyAppRemotePlayerStateDelegate(callback).new();
+		this.appRemote.playerAPI.delegate = playerStateDelegate;
+
+		this.appRemote.playerAPI.subscribeToPlayerState(async (_result: NSObject, error: any) => {
+			if (error) {
+				throw error;
+			}
 		});
 	}
 
@@ -274,7 +282,7 @@ export class SpotifyAppRemote extends SpotifyAppRemoteCommon {
 		});
 	}
 
-	private static async getNativeImage(imageRepresentable: SPTAppRemoteImageRepresentable): Promise<UIImage> {
+	public static async getImage(imageRepresentable: SPTAppRemoteImageRepresentable): Promise<UIImage> {
 		return new Promise((resolve, reject) => {
 			// @ts-ignore
 			if (imageRepresentable.conformsToProtocol(SPTAppRemoteImageRepresentable)) {

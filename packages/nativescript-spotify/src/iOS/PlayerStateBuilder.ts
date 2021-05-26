@@ -5,13 +5,17 @@ import { PlayerOptions } from '../common/PlayerOptions';
 import { PlayerRestrictions } from '../common/PlayerRestrictions';
 import { PlayerState } from '../common/PlayerState';
 import { Track } from '../common/Track';
+import { SpotifyAppRemote } from './SpotifyAppRemote';
 
 export class PlayerStateBuilder {
-	public static build(nativePlayerState: NSObject, trackImage: ImageSource): PlayerState {
-		return new PlayerState(this.buildTrack(nativePlayerState?.valueForKey('track'), trackImage), nativePlayerState?.valueForKey('paused'), nativePlayerState?.valueForKey('playbackSpeed'), nativePlayerState?.valueForKey('playbackPosition'), this.buildPlayerOptions(nativePlayerState?.valueForKey('playbackOptions')), this.buildPlayerRestrictions(nativePlayerState?.valueForKey('playbackRestrictions')));
+	public static async build(nativePlayerState: NSObject): Promise<PlayerState> {
+		const track = await this.buildTrack(nativePlayerState?.valueForKey('track'));
+		return new PlayerState(track, nativePlayerState?.valueForKey('paused'), nativePlayerState?.valueForKey('playbackSpeed'), nativePlayerState?.valueForKey('playbackPosition'), this.buildPlayerOptions(nativePlayerState?.valueForKey('playbackOptions')), this.buildPlayerRestrictions(nativePlayerState?.valueForKey('playbackRestrictions')));
 	}
 
-	private static buildTrack(nativeTrack: NSObject, image: ImageSource): Track {
+	private static async buildTrack(nativeTrack: NSObject): Promise<Track> {
+		// @ts-ignore
+		const image = await this.buildImage(nativeTrack);
 		return new Track(
 			this.buildArtist(nativeTrack?.valueForKey('artist')),
 			// TODO: Check if Spotify iOS SDK provides an artists array
@@ -32,6 +36,11 @@ export class PlayerStateBuilder {
 
 	private static buildAlbum(nativeAlbum: NSObject): Album {
 		return new Album(nativeAlbum?.valueForKey('name'), nativeAlbum?.valueForKey('URI'));
+	}
+
+	private static async buildImage(imageRepresentable: SPTAppRemoteImageRepresentable): Promise<ImageSource> {
+		const image = await SpotifyAppRemote.getImage(imageRepresentable);
+		return new ImageSource(image);
 	}
 
 	private static buildPlayerOptions(nativePlayerOptions: NSObject): PlayerOptions {
